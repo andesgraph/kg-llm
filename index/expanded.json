@@ -1,0 +1,152 @@
+[
+  {
+    "uri": "http://example.org/festividades#IndividuoQolla1",
+    "label": "Qolla 1",
+    "comment": "",
+    "types": [
+      "http://example.org/festividades#IndividuoDeDanza"
+    ],
+    "relations": [
+      {
+        "property": "http://example.org/festividades#interpreta",
+        "object": "http://example.org/festividades#DanzaQolla"
+      }
+    ]
+  },
+  {
+    "uri": "http://example.org/festividades#EntradaNaciones",
+    "label": "Entrada de las Naciones",
+    "comment": "Desfile y presentación de comunidades y comparsas durante Qoyllur Rit’i.",
+    "types": [
+      "http://example.org/festividades#Evento"
+    ],
+    "relations": [
+      {
+        "property": "http://example.org/festividades#ocurreEn",
+        "object": "http://example.org/festividades#SantuarioSinakara"
+      }
+    ]
+  },
+  {
+    "uri": "http://example.org/festividades#IndividuoUkuku1",
+    "label": "Ukuku 1",
+    "comment": "",
+    "types": [
+      "http://example.org/festividades#IndividuoDeDanza"
+    ],
+    "relations": [
+      {
+        "property": "http://example.org/festividades#interpreta",
+        "object": "http://example.org/festividades#DanzaUkuku"
+      }
+    ]
+  },
+  {
+    "uri": "http://example.org/festividades#DanzaQolla",
+    "label": "Danza de los Qollas",
+    "comment": "Danza representativa ejecutada por personajes Qolla.",
+    "types": [
+      "http://example.org/festividades#Danza"
+    ],
+    "relations": [
+      {
+        "property": "http://example.org/festividades#formaParteDe",
+        "object": "http://example.org/festividades#QoyllurRiti"
+      },
+      {
+        "property": "http://example.org/festividades#sePresentaEn",
+        "object": "http://example.org/festividades#EntradaNaciones"
+      }
+    ]
+  },
+  {
+    "uri": "http://example.org/festividades#PersonajeUkuku",
+    "label": "Personaje Ukuku",
+    "comment": "Personaje ritual híbrido (oso-humano) que actúa como mediador simbólico y guardián.",
+    "types": [
+      "http://example.org/festividades#PersonajeRitual"
+    ],
+    "relations": [
+      {
+        "property": "http://example.org/festividades#participaEn",
+        "object": "http://example.org/festividades#EntradaNaciones"
+      },
+      {
+        "property": "http://example.org/festividades#perteneceA",
+        "object": "http://example.org/festividades#ComunidadPaucartambo"
+      }
+    ]
+  },
+  {
+    "uri": "http://example.org/festividades#DanzaUkuku",
+    "label": "Danza de los Ukukus",
+    "comment": "Danza asociada al personaje ritual Ukuku, mediador entre humanos y montañas.",
+    "types": [
+      "http://example.org/festividades#Danza"
+    ],
+    "relations": [
+      {
+        "property": "http://example.org/festividades#formaParteDe",
+        "object": "http://example.org/festividades#QoyllurRiti"
+      },
+      {
+        "property": "http://example.org/festividades#sePresentaEn",
+        "object": "http://example.org/festividades#EntradaNaciones"
+      }
+    ]
+  },
+  {
+    "uri": "http://example.org/festividades#ComunidadQolla",
+    "label": "Comunidad Qolla",
+    "comment": "",
+    "types": [
+      "http://example.org/festividades#Comunidad"
+    ],
+    "relations": []
+  },
+  {
+    "uri": "http://example.org/festividades#QoyllurRiti",
+    "label": "Señor de Qoyllur Rit’i",
+    "comment": "Peregrinación y festividad andina que reúne a múltiples comunidades en el santuario de Sinakara.",
+    "types": [
+      "http://example.org/festividades#Festividad"
+    ],
+    "relations": []
+  },
+  {
+    "uri": "http://example.org/festividades#PersonajeQolla",
+    "label": "Personaje Qolla",
+    "comment": "Figura ritual vinculada al intercambio, la movilidad y la relación con tierras altas.",
+    "types": [
+      "http://example.org/festividades#PersonajeRitual"
+    ],
+    "relations": [
+      {
+        "property": "http://example.org/festividades#participaEn",
+        "object": "http://example.org/festividades#EntradaNaciones"
+      },
+      {
+        "property": "http://example.org/festividades#perteneceA",
+        "object": "http://example.org/festividades#ComunidadQolla"
+      }
+    ]
+  },
+  {
+    "uri": "http://example.org/festividades#SantuarioSinakara",
+    "label": "Santuario de Sinakara",
+    "comment": "Centro ritual donde culmina la peregrinación del Señor de Qoyllur Rit’i.",
+    "types": [
+      "http://example.org/festividades#LugarSagrado"
+    ],
+    "relations": []
+  },
+  {
+    "uri": "http://example.org/festividades#ComunidadPaucartambo",
+    "label": "Comunidad de Paucartambo",
+    "comment": "",
+    "types": [
+      "http://example.org/festividades#Comunidad"
+    ],
+    "relations": []
+  }
+]

@@ -1,0 +1,153 @@
+@prefix : <http://example.org/festividades#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/festividades> rdf:type owl:Ontology .
+
+############################################################
+#  CLASSES
+############################################################
+
+:Festividad rdf:type owl:Class ;
+            rdfs:comment "Celebración ritual andina que involucra comunidades, personajes, danzas y espacios sagrados." .
+
+:Evento rdf:type owl:Class ;
+        rdfs:comment "Actividad ritual dentro de una festividad, como procesiones o entradas." .
+
+:Danza rdf:type owl:Class ;
+       rdfs:comment "Conjunto coreográfico realizado en una festividad." .
+
+:IndividuoDeDanza rdf:type owl:Class ;
+                  rdfs:subClassOf :PersonajeRitual ;
+                  rdfs:comment "Personaje ritual que ejecuta una danza específica." .
+
+:PersonajeRitual rdf:type owl:Class ;
+                 rdfs:comment "Figura simbólica encarnada por danzantes o actores rituales." .
+
+:Comunidad rdf:type owl:Class ;
+           rdfs:comment "Colectivo social que participa en la festividad." .
+
+:LugarSagrado rdf:type owl:Class ;
+              rdfs:comment "Espacio geográfico con significado espiritual dentro del ritual." .
+
+:Documento rdf:type owl:Class ;
+           rdfs:comment "Recurso documental (foto, video, audio, texto) que registra eventos de la festividad." .
+
+############################################################
+#  OBJECT PROPERTIES
+############################################################
+
+:formaParteDe rdf:type owl:ObjectProperty ;
+              rdfs:domain :Danza ;
+              rdfs:range :Festividad ;
+              rdfs:comment "Una danza pertenece o contribuye a una festividad." .
+
+:sePresentaEn rdf:type owl:ObjectProperty ;
+              rdfs:domain :Danza ;
+              rdfs:range :Evento ;
+              rdfs:comment "Indica en qué evento ocurre una danza." .
+
+:interpreta rdf:type owl:ObjectProperty ;
+            rdfs:domain :IndividuoDeDanza ;
+            rdfs:range :Danza ;
+            rdfs:comment "Un individuo de danza ejecuta/encarna una danza ritual." .
+
+:participaEn rdf:type owl:ObjectProperty ;
+             rdfs:domain :PersonajeRitual ;
+             rdfs:range :Evento ;
+             rdfs:comment "Un personaje ritual está presente y actúa en un evento." .
+
+:perteneceA rdf:type owl:ObjectProperty ;
+            rdfs:domain :PersonajeRitual ;
+            rdfs:range :Comunidad ;
+            rdfs:comment "Vincula un personaje ritual con la comunidad que lo representa." .
+
+:ocurreEn rdf:type owl:ObjectProperty ;
+          rdfs:domain :Evento ;
+          rdfs:range :LugarSagrado ;
+          rdfs:comment "Un evento ritual sucede en un lugar sagrado." .
+
+:documenta rdf:type owl:ObjectProperty ;
+           rdfs:domain :Documento ;
+           rdfs:range :Evento ;
+           rdfs:comment "El documento registra un evento específico." .
+
+############################################################
+#  DATATYPE PROPERTIES
+############################################################
+
+:fechaRegistro rdf:type owl:DatatypeProperty ;
+               rdfs:domain :Documento ;
+               rdfs:range xsd:dateTime ;
+               rdfs:comment "Fecha de creación o registro del documento." .
+
+############################################################
+#  INDIVIDUALS
+############################################################
+
+### FESTIVIDAD
+
+:QoyllurRiti rdf:type :Festividad ;
+             rdfs:label "Señor de Qoyllur Rit’i" ;
+             rdfs:comment "Peregrinación y festividad andina que reúne a múltiples comunidades en el santuario de Sinakara." .
+
+### LUGARES
+
+:SantuarioSinakara rdf:type :LugarSagrado ;
+                   rdfs:label "Santuario de Sinakara" ;
+                   rdfs:comment "Centro ritual donde culmina la peregrinación del Señor de Qoyllur Rit’i." .
+
+### EVENTOS
+
+:EntradaNaciones rdf:type :Evento ;
+                 :ocurreEn :SantuarioSinakara ;
+                 rdfs:label "Entrada de las Naciones" ;
+                 rdfs:comment "Desfile y presentación de comunidades y comparsas durante Qoyllur Rit’i." .
+
+### DANZAS
+
+:DanzaQolla rdf:type :Danza ;
+            :formaParteDe :QoyllurRiti ;
+            :sePresentaEn :EntradaNaciones ;
+            rdfs:label "Danza de los Qollas" ;
+            rdfs:comment "Danza representativa ejecutada por personajes Qolla." .
+
+:DanzaUkuku rdf:type :Danza ;
+            :formaParteDe :QoyllurRiti ;
+            :sePresentaEn :EntradaNaciones ;
+            rdfs:label "Danza de los Ukukus" ;
+            rdfs:comment "Danza asociada al personaje ritual Ukuku, mediador entre humanos y montañas." .
+
+### COMUNIDADES
+
+:ComunidadQolla rdf:type :Comunidad ;
+                rdfs:label "Comunidad Qolla" .
+
+:ComunidadPaucartambo rdf:type :Comunidad ;
+                      rdfs:label "Comunidad de Paucartambo" .
+
+### PERSONAJES DE DANZA
+
+:IndividuoQolla1 rdf:type :IndividuoDeDanza ;
+                 :interpreta :DanzaQolla ;
+                 rdfs:label "Qolla 1" .
+
+:IndividuoUkuku1 rdf:type :IndividuoDeDanza ;
+                 :interpreta :DanzaUkuku ;
+                 rdfs:label "Ukuku 1" .
+
+### PERSONAJES RITUALES
+
+:PersonajeQolla rdf:type :PersonajeRitual ;
+                :participaEn :EntradaNaciones ;
+                :perteneceA :ComunidadQolla ;
+                rdfs:label "Personaje Qolla" ;
+                rdfs:comment "Figura ritual vinculada al intercambio, la movilidad y la relación con tierras altas." .
+
+:PersonajeUkuku rdf:type :PersonajeRitual ;
+                :participaEn :EntradaNaciones ;
+                :perteneceA :ComunidadPaucartambo ;
+                rdfs:label "Personaje Ukuku" ;
+                rdfs:comment "Personaje ritual híbrido (oso-humano) que actúa como mediador simbólico y guardián." .

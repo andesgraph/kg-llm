@@ -1,0 +1,18 @@
+#entornos
+llm-env/
+venv/
+env/
+
+#modelos grandes
+modelos/*.gguf
+modelos/*.pt
+modelos/*.onnx
+
+#archivos generados
+index/*.npz
+data/index_entities.json
+__pycache__/
+
+#sistema
+*.log
+.DS_Store

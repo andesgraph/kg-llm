@@ -1,0 +1,46 @@
+[
+  {
+    "uri": "http://example.org/festividades#IndividuoQolla1",
+    "label": "Qolla 1"
+  },
+  {
+    "uri": "http://example.org/festividades#EntradaNaciones",
+    "label": "Entrada de las Naciones"
+  },
+  {
+    "uri": "http://example.org/festividades#IndividuoUkuku1",
+    "label": "Ukuku 1"
+  },
+  {
+    "uri": "http://example.org/festividades#DanzaQolla",
+    "label": "Danza de los Qollas"
+  },
+  {
+    "uri": "http://example.org/festividades#PersonajeUkuku",
+    "label": "Personaje Ukuku"
+  },
+  {
+    "uri": "http://example.org/festividades#DanzaUkuku",
+    "label": "Danza de los Ukukus"
+  },
+  {
+    "uri": "http://example.org/festividades#ComunidadQolla",
+    "label": "Comunidad Qolla"
+  },
+  {
+    "uri": "http://example.org/festividades#QoyllurRiti",
+    "label": "Señor de Qoyllur Rit’i"
+  },
+  {
+    "uri": "http://example.org/festividades#PersonajeQolla",
+    "label": "Personaje Qolla"
+  },
+  {
+    "uri": "http://example.org/festividades#SantuarioSinakara",
+    "label": "Santuario de Sinakara"
+  },
+  {
+    "uri": "http://example.org/festividades#ComunidadPaucartambo",
+    "label": "Comunidad de Paucartambo"
+  }
+]
