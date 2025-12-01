@@ -1,9 +1,23 @@
-kg-llm
+# kg-llm
 
-Pipeline mínimo para conectar un grafo RDF (TTL) con un modelo LLM local usando un índice vectorial ligero para recuperación semántica.
+**kg-llm** es un pipeline mínimo y modular que conecta un **grafo RDF (TTL)** con un **modelo LLM local**, utilizando un **índice vectorial ligero** para recuperación semántica.  
+Está diseñado para casos donde se requiere consultar un grafo de conocimiento desde lenguaje natural sin depender de APIs externas — ideal para patrimonio cultural, humanidades digitales o prototipos rápidos de RAG local.
 
-Estructura del proyecto
+---
 
+## Características
+
+- Procesa un grafo RDF y extrae entidades relevantes.
+- Genera un índice vectorial a partir de embeddings ligeros.
+- Conecta preguntas en lenguaje natural con entidades del grafo.
+- Funciona completamente **offline** con modelos `.gguf`.
+- Código simple, modular y fácil de extender.
+
+---
+
+## Estructura del proyecto
+
+```text
 kg-llm/
 ├── README.md
 ├── config.yaml
@@ -18,65 +32,103 @@ kg-llm/
     ├── extract_entities.py
     ├── build_index.py
     └── answer.py
+```
 
-Requisitos
+---
+
+## Requisitos
 
 - Python 3.9+
 - pip
-- Archivo RDF en formato Turtle (data/grafo.ttl)
-- Modelo LLM local en formato .gguf (modelos/qwen2.5-0.5b.gguf)
+- Archivo RDF en formato Turtle (`data/grafo.ttl`)
+- Modelo LLM local en formato `.gguf` compatible con llama.cpp
 
-Instalación
+---
 
+## Instalación
+
+1. Crear entorno virtual:
+
+```bash
 python3 -m venv llm-env
 source llm-env/bin/activate
+```
+
+2. Instalar dependencias:
+
+```bash
 pip install rdflib sentence-transformers numpy transformers
+```
 
-Configuración
+---
 
-El archivo config.yaml define las rutas y parámetros básicos del sistema. Ejemplo:
+## Configuración
 
+Editar `config.yaml` según tus rutas:
+
+```yaml
 graph_file: data/grafo.ttl
 entities_file: data/index_entities.json
 vectors_path: index/entity_vectors.npz
 model_path: modelos/qwen2.5-0.5b.gguf
 top_k: 5
+```
 
-Pasos detallados
+---
 
-1. Preparar el entorno
+## Uso
 
-   - Activar el entorno virtual:
-     source llm-env/bin/activate
+### 1. Extraer entidades del grafo
 
-   - Verificar que existen:
-     - data/grafo.ttl
-     - modelos/qwen2.5-0.5b.gguf
-     - config.yaml (con rutas correctas)
+```bash
+python scripts/extract_entities.py
+```
 
-2. Extraer entidades desde el grafo
+Genera `data/index_entities.json`.
 
-   python scripts/extract_entities.py
+---
 
-   Este comando lee data/grafo.ttl y genera data/index_entities.json con las entidades y metadatos básicos.
+### 2. Construir el índice vectorial
 
-3. Construir el índice vectorial
+```bash
+python scripts/build_index.py
+```
 
-   python scripts/build_index.py
+Genera `index/entity_vectors.npz`.
 
-   Este comando lee data/index_entities.json, calcula embeddings y guarda index/entity_vectors.npz.
+---
 
-4. Hacer consultas con recuperación + LLM
+### 3. Hacer consultas con recuperación + LLM
 
-   python scripts/answer.py "¿Quién es el Ukuku?"
+```bash
+python scripts/answer.py "¿Quién es el Ukuku?"
+```
 
-   El script usa el índice vectorial y el modelo definido en config.yaml para generar una respuesta basada en las entidades más cercanas a la pregunta.
+La respuesta combina la recuperación del grafo y el modelo local.
 
-Configurar GitHub
+---
 
+## Subir el proyecto a GitHub
+
+```bash
 git init
 git add .
 git commit -m "Initial kg-llm pipeline"
 git branch -M main
-git remote add origin https://github.com/TU_USUARIO/kg-llm.git
+git remote add origin https://github.com/andesgraph/kg-llm.git
 git push -u origin main
+```
+
+---
+
+## Licencia
+
+MIT License. Puedes usarlo y modificarlo libremente.
+
+---
+
+## Contribuciones
+
+Pull requests y mejoras son bienvenidas.  
+Si deseas reportar errores, usa los Issues del repositorio.
+
