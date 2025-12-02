@@ -1,7 +1,12 @@
 # kg-llm
 
-**kg-llm** es un pipeline mínimo y modular que conecta un **grafo RDF (TTL)** con un **modelo LLM local**, utilizando un **índice vectorial ligero** para recuperación semántica.  
-Está diseñado para casos donde se requiere consultar un grafo de conocimiento desde lenguaje natural sin depender de APIs externas — ideal para patrimonio cultural, humanidades digitales o prototipos rápidos de RAG local.
+**kg-llm** es un pipeline mínimo y modular que conecta un **grafo RDF (TTL)** con un **modelo LLM local**, utilizando 
+un **índice vectorial ligero** para recuperación semántica. En este proyecto, lo aplicamos para modelar el 
+conocimiento cultural de dos festividades andinas fundamentales: la **Virgen del Carmen de Paucartambo** y 
+el **Señor de Qoyllur Rit’i**, integrando información sobre danzas, personajes rituales, comunidades y prácticas 
+ceremoniales. Este enfoque permite consultar el grafo mediante lenguaje natural sin depender de APIs externas, 
+ofreciendo una solución eficiente para proyectos de **patrimonio cultural**, **humanidades digitales** y prototipos 
+rápidos de **RAG local** orientados a la preservación y análisis computacional de tradiciones vivas.
 
 ---
 
