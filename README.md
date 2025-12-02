@@ -132,8 +132,138 @@ MIT License. Puedes usarlo y modificarlo libremente.
 
 ---
 
-## Contribuciones
+## Guía completa para trabajo colaborativo con GitHub Desktop, GitHub Web y Raspberry Pi (terminal)
 
-Pull requests y mejoras son bienvenidas.  
-Si deseas reportar errores, usa los Issues del repositorio.
+Este documento explica **cómo deben trabajar 2–3 personas** sobre el proyecto `kg-llm`, usando:
+
+- **GitHub Desktop** (para trabajar en PC/Mac con interfaz gráfica)  
+- **GitHub Web** (para crear Pull Requests y revisarlos)  
+- **Raspberry Pi con terminal** (para actualizar el proyecto y regenerar índices)
+
+Todo es claro, ordenado y paso a paso.
+
+---
+
+# 1. Estructura del equipo
+
+- **Cuenta A**  
+  Dueña del repositorio original en GitHub.  
+  La Raspberry Pi está conectada a este repositorio (hace `git pull`, `git push` si corresponde).
+
+- **Cuenta B, Cuenta C**  
+  Personas que editan la ontología con **Protégé Desktop**.  
+  Trabajan sobre **forks** usando GitHub Desktop + GitHub Web.
+
+---
+
+# 2. Flujo general del trabajo colaborativo
+
+1. B y C crean **forks** del repo de A.  
+2. B y C clonan sus propios forks en GitHub Desktop.  
+3. B y C editan `grafo.ttl` en Protégé Desktop.  
+4. B y C hacen commit y push desde GitHub Desktop a sus forks.  
+5. B y C crean un **Pull Request** desde GitHub Web.  
+6. Cuenta A revisa y hace **Merge** del Pull Request.  
+7. Raspberry Pi actualiza el proyecto con `git pull` y regenera el índice.
+
+---
+
+# 3. Instrucciones para usuarios con GitHub Desktop (B y C)
+
+## 3.1. Crear el fork desde GitHub Web
+
+1. Ir a: `https://github.com/CuentaA/kg-llm`  
+2. Haz clic en **Fork**.  
+3. GitHub creará tu propio repositorio: `https://github.com/TuCuenta/kg-llm`.
+
+---
+
+## 3.2. Clonar el fork con GitHub Desktop
+
+1. Abre **GitHub Desktop**.  
+2. Menú: **File → Clone Repository**.  
+3. Elige el fork que aparece bajo tu cuenta.  
+4. Clóvalo en tu PC.
+
+---
+
+## 3.3. Editar la ontología en Protégé Desktop
+
+1. Abre Protégé Desktop.  
+2. File → Open.  
+3. Selecciona `kg-llm/data/grafo.ttl`.  
+4. Realiza los cambios.  
+5. Guarda con  
+   **File → Save**.
+
+---
+
+## 3.4. Hacer commit y push desde GitHub Desktop
+
+1. Vuelve a GitHub Desktop.  
+2. Verás los cambios listados (incluyendo `grafo.ttl`).  
+3. Escribe un mensaje de commit:  
+   _"Actualización de ontología desde Protégé"_  
+4. Presiona **Commit to main** (o la rama donde estés).  
+5. Presiona **Push origin**.
+
+Ahora tu fork contiene los cambios.
+
+---
+
+## 3.5. Crear un Pull Request desde GitHub Web
+
+1. Haz clic en **View on GitHub** desde GitHub Desktop **o** abre tu fork en el navegador.  
+2. GitHub mostrará un aviso:  
+   **“You have recent pushes… Compare & Pull Request”**  
+3. Si no aparece:  
+   - Ir a **Pull requests → New pull request**  
+4. Configurar:  
+   - **base repository:** `CuentaA/kg-llm`  
+   - **base branch:** `main`  
+   - **head repository:** tu fork  
+   - **compare branch:** tu rama con cambios  
+5. Clic en **Create Pull Request**.
+
+Fin del proceso para B/C.  
+Cuenta A ahora debe aprobar el PR.
+
+---
+
+# 4. Instrucciones para la persona dueña del repositorio (Cuenta A)
+
+## 4.1. Revisar y aceptar Pull Requests
+
+1. Ir al repo original: `https://github.com/CuentaA/kg-llm`.  
+2. Abrir la pestaña **Pull Requests**.  
+3. Seleccionar el PR enviado por B o C.  
+4. Revisar los cambios (GitHub muestra el diff).  
+5. Si todo está correcto:  
+   - Clic en **Merge pull request**  
+   - Clic en **Confirm merge**
+
+El repositorio original queda actualizado.
+
+---
+
+# 5. Instrucciones para la Raspberry Pi (terminal)
+
+La Raspberry está conectada al repo de **Cuenta A**, no a los forks.
+
+Cada vez que Cuenta A haga Merge de un PR:
+
+## 5.1. Actualizar el repositorio en Raspberry
+
+```bash
+cd /home/pi/kg-llm
+git pull
+
+## 5.2. Regenerar los índices del proyecto
+
+```bash
+source llm-env/bin/activate
+python scripts/extract_entities.py
+python scripts/build_index.py
+
+
 
