@@ -11,6 +11,8 @@ import json
 import yaml
 import numpy as np
 import sys
+import warnings
+warnings.filterwarnings("ignore",category=UserWarning)
 
 from sentence_transformers import SentenceTransformer
 from llama_cpp import Llama
