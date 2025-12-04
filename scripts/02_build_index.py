@@ -6,7 +6,7 @@ import os
 
 cfg = yaml.safe_load(open("/home/pi/Documents/kg-llm/config.yaml", encoding="utf-8"))
 ENT_FILE = cfg["paths"]["entities"]
-OUT_VEC = cfg["paths"]["vectors"]
+OUT_VEC = cfg["paths"]["index"]
 
 def build_index():
     print("Cargando modelo...")
