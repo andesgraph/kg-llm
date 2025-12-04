@@ -3,73 +3,88 @@
 #
 # Consulta el índice de embeddings y genera una respuesta
 # usando el modelo local (.gguf) definido en config.yaml.
+#
+# Uso:
+#   python3 scripts/03_query.py "¿Quién es el Ukuku?"
 
 import json
 import yaml
 import numpy as np
 import sys
+
 from sentence_transformers import SentenceTransformer
 from llama_cpp import Llama
 
 # ============================
-# Cargar configuración
+# 1. Cargar configuración
 # ============================
 
 CFG = yaml.safe_load(open("config.yaml", encoding="utf-8"))
 
-TTL_FILE    = CFG["paths"]["ttl"]            # no lo usamos aún, pero queda para futuro
-ENT_FILE    = CFG["paths"]["entities"]       # entities.json (simple)
-INDEX_FILE  = CFG["paths"]["index"]          # index.npz
+TTL_FILE    = CFG["paths"]["ttl"]              # por ahora no se usa, pero se deja
+ENT_FILE    = CFG["paths"]["entities"]         # index/entities.json (simple)
+INDEX_FILE  = CFG["paths"]["index"]            # index/index.npz
 
-MODEL_PATH  = CFG["model"]["path"]
-MODEL_CTX   = CFG["model"].get("ctx", 2048)
+MODEL_PATH    = CFG["model"]["path"]
+MODEL_CTX     = CFG["model"].get("ctx", 2048)
 MODEL_THREADS = CFG["model"].get("threads", 4)
 
-TOP_K = 5  # número de entidades a recuperar
+TOP_K = 5  # número de entidades a recuperar para el contexto
 
 
 # ============================
-# Utilidades
+# 2. Utilidades
 # ============================
 
 def load_index(path_npz):
-    """Carga embeddings y URIs desde el archivo .npz, siendo robusto a nombres de claves."""
+    """
+    Carga embeddings y URIs desde el archivo .npz.
+    Soporta diferentes nombres de clave ('vectors'/'embeddings', 'ids'/'uris').
+    """
     data = np.load(path_npz)
-
-    files = list(data.files)
+    keys = list(data.files)
 
     # vectores
-    if "vectors" in files:
+    if "vectors" in keys:
         vectors = data["vectors"]
-    elif "embeddings" in files:
+    elif "embeddings" in keys:
         vectors = data["embeddings"]
     else:
-        raise KeyError(f"No se encontraron claves 'vectors' ni 'embeddings' en {path_npz}. Claves: {files}")
+        raise KeyError(
+            f"No se encontraron claves 'vectors' ni 'embeddings' en {path_npz}. "
+            f"Claves disponibles: {keys}"
+        )
 
     # identificadores
-    if "ids" in files:
+    if "ids" in keys:
         ids = data["ids"]
-    elif "uris" in files:
+    elif "uris" in keys:
         ids = data["uris"]
     else:
-        raise KeyError(f"No se encontraron claves 'ids' ni 'uris' en {path_npz}. Claves: {files}")
+        raise KeyError(
+            f"No se encontraron claves 'ids' ni 'uris' en {path_npz}. "
+            f"Claves disponibles: {keys}"
+        )
 
     return vectors, ids.tolist()
 
 
 def normalize(vectors: np.ndarray) -> np.ndarray:
-    """Normaliza filas de una matriz de vectores."""
+    """Normaliza cada fila de una matriz de vectores (para usar producto punto como coseno)."""
     norms = np.linalg.norm(vectors, axis=1, keepdims=True)
     norms[norms == 0.0] = 1.0
     return vectors / norms
 
 
 # ============================
-# Carga de recursos
+# 3. Carga de datos y modelos
 # ============================
 
 print("📘 Cargando entidades...")
 entities = json.load(open(ENT_FILE, encoding="utf-8"))
+
+# entities.json viene de 01_extract_entities.py (simple_list)
+# estructura típica: { "uri": ..., "label": ..., "text": ... }
 uri_to_entity = {e["uri"]: e for e in entities}
 
 print("📦 Cargando índice de embeddings...")
@@ -86,16 +101,20 @@ llm = Llama(
     n_threads=MODEL_THREADS,
 )
 
+
 # ============================
-# Bucle de consulta
+# 4. Recuperación semántica
 # ============================
 
 def retrieve(query: str, top_k: int = TOP_K):
-    """Devuelve las top_k entidades más cercanas a la consulta."""
+    """
+    Devuelve las top_k entidades más cercanas a la consulta,
+    con score de similitud y metadatos.
+    """
     q_vec = emb_model.encode(query, convert_to_numpy=True)
     q_vec = q_vec / (np.linalg.norm(q_vec) + 1e-9)
 
-    scores = VEC @ q_vec  # producto punto con vectores normalizados
+    scores = VEC @ q_vec  # coseno porque todo está normalizado
     idxs = np.argsort(-scores)[:top_k]
 
     results = []
@@ -103,44 +122,84 @@ def retrieve(query: str, top_k: int = TOP_K):
         uri = IDS[i]
         score = float(scores[i])
         ent = uri_to_entity.get(uri, {"uri": uri, "label": uri, "text": ""})
-        results.append({"uri": uri, "score": score, **ent})
+        results.append(
+            {
+                "uri": uri,
+                "score": score,
+                "label": ent.get("label", uri),
+                "text": ent.get("text", ""),
+            }
+        )
     return results
 
 
 def build_context(results):
-    """Construye un texto de contexto para el LLM usando las entidades recuperadas."""
+    """
+    Construye el texto de contexto a partir de las entidades recuperadas.
+    - Elimina duplicados por URI.
+    - Limita el número de líneas para evitar repetición.
+    """
+    seen = set()
     lines = []
-    for r in results:
-        label = r.get("label", r["uri"])
-        text = r.get("text") or r.get("comment", "")
-        line = f"- {label} ({r['uri']}): {text}"
-        lines.append(line)
-    return "\n".join(lines)
 
+    for r in results:
+        if r["uri"] in seen:
+            continue
+        seen.add(r["uri"])
+
+        label = r["label"]
+        text = r.get("text", "")
+        line = f"- {label}: {text}"
+        lines.append(line)
+
+    # limitar a máximo 5 entradas en el contexto
+    return "\n".join(lines[:5])
+
+
+# ============================
+# 5. Llamada al LLM local
+# ============================
 
 def ask_llm(query: str, context: str) -> str:
-    """Llama al modelo local con un prompt simple de RAG."""
+    """
+    Llama al modelo local con un prompt estilo RAG.
+    Se fuerza a:
+      - no repetir frases
+      - responder breve
+    """
     prompt = (
-        "Eres un asistente que responde sobre festividades andinas, personajes rituales "
-        "y patrimonio cultural. Usa SOLO la información del contexto cuando sea posible.\n\n"
-        f"Contexto:\n{context}\n\n"
-        f"Pregunta: {query}\n\n"
-        "Respuesta (en español, clara y concisa):\n"
+        "Eres un asistente experto en festividades andinas, personajes rituales "
+        "y patrimonio cultural.\n"
+        "Responde en español, con precisión y SIN repetir frases.\n"
+        "Si el contexto es redundante, sintetiza la información.\n\n"
+        "Contexto:\n"
+        f"{context}\n\n"
+        "Pregunta:\n"
+        f"{query}\n\n"
+        "Respuesta (máximo 5 líneas, clara y sin repeticiones):\n"
     )
 
     out = llm(
         prompt,
-        max_tokens=512,
-        temperature=0.3,
-        top_p=0.95,
-        stop=["</s>"],
+        max_tokens=256,
+        temperature=0.25,
+        top_k=40,
+        top_p=0.9,
+        repeat_penalty=1.3,  # clave para evitar repeticiones
+        stop=["\n\n", "</s>"],
     )
-    # llama_cpp devuelve un dict si se llama con argumentos nombrados; pero con esta
-    # interfaz devuelve directamente el texto generado.
+
+    # llama_cpp normalmente devuelve un dict con choices
     if isinstance(out, dict) and "choices" in out:
         return out["choices"][0]["text"].strip()
+
+    # fallback por si la versión devuelve un string
     return str(out).strip()
 
+
+# ============================
+# 6. Entrada principal
+# ============================
 
 def main():
     if len(sys.argv) > 1:
@@ -156,7 +215,7 @@ def main():
     results = retrieve(query, TOP_K)
 
     for r in results:
-        print(f"  • {r.get('label', r['uri'])}  (score={r['score']:.3f})")
+        print(f"  • {r['label']}  (score={r['score']:.3f})")
 
     context = build_context(results)
 
