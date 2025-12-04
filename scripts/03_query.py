@@ -12,10 +12,22 @@ import yaml
 import numpy as np
 import sys
 import warnings
-warnings.filterwarnings("ignore",category=UserWarning)
 
 from sentence_transformers import SentenceTransformer
+import llama_cpp
 from llama_cpp import Llama
+
+# Silenciar algunos warnings molestos
+warnings.filterwarnings("ignore", category=UserWarning)
+
+# Parche: desactivar destructor problemático de Llama para que
+# no aparezca el traceback "NoneType object is not callable" al salir.
+def _safe_del(self):
+    # No hacemos nada al destruir el modelo.
+    # La memoria se libera al terminar el proceso.
+    pass
+
+llama_cpp.Llama.__del__ = _safe_del
 
 # ============================
 # 1. Cargar configuración
@@ -23,7 +35,7 @@ from llama_cpp import Llama
 
 CFG = yaml.safe_load(open("config.yaml", encoding="utf-8"))
 
-TTL_FILE    = CFG["paths"]["ttl"]              # por ahora no se usa, pero se deja
+TTL_FILE    = CFG["paths"]["ttl"]              # no se usa aún, pero queda para futuro
 ENT_FILE    = CFG["paths"]["entities"]         # index/entities.json (simple)
 INDEX_FILE  = CFG["paths"]["index"]            # index/index.npz
 
@@ -84,10 +96,7 @@ def normalize(vectors: np.ndarray) -> np.ndarray:
 
 print("📘 Cargando entidades...")
 entities = json.load(open(ENT_FILE, encoding="utf-8"))
-
-# entities.json viene de 01_extract_entities.py (simple_list)
-# estructura típica: { "uri": ..., "label": ..., "text": ... }
-uri_to_entity = {e["uri"]: e for e in entities}
+uri_to_entity = {e["uri"]: e for e in entities}   # entities.json viene de 01_extract_entities.py
 
 print("📦 Cargando índice de embeddings...")
 VEC, IDS = load_index(INDEX_FILE)
@@ -101,6 +110,7 @@ llm = Llama(
     model_path=MODEL_PATH,
     n_ctx=MODEL_CTX,
     n_threads=MODEL_THREADS,
+    verbose=False,         # para que no imprima métricas de tiempo
 )
 
 
@@ -191,11 +201,9 @@ def ask_llm(query: str, context: str) -> str:
         stop=["\n\n", "</s>"],
     )
 
-    # llama_cpp normalmente devuelve un dict con choices
     if isinstance(out, dict) and "choices" in out:
         return out["choices"][0]["text"].strip()
 
-    # fallback por si la versión devuelve un string
     return str(out).strip()
 
 
