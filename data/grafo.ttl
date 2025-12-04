@@ -1,194 +1,289 @@
 @prefix : <http://example.org/festividades#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
 
-<http://example.org/festividades> rdf:type owl:Ontology ;
-    rdfs:comment "Ontología para modelar festividades andinas, sus actores, espacios, danzas, roles y documentación." .
+#################################################################
+### 1. CLASES (ONTOLOGÍA)
+#################################################################
 
-############################################################
-#  CLASSES
-############################################################
+:Festividad a owl:Class ;
+    rdfs:label "Festividad"@es .
 
-:Festividad rdf:type owl:Class ;
-    rdfs:comment "Celebración ritual andina que articula comunidades, personajes, danzas y espacios sagrados." .
+:PersonajeRitual a owl:Class ;
+    rdfs:label "Personaje ritual"@es .
 
-:Evento rdf:type owl:Class ;
-    rdfs:comment "Actividad ritual dentro de una festividad (procesiones, entradas, recorridos)." .
+:Danza a owl:Class ;
+    rdfs:label "Danza"@es .
 
-:Danza rdf:type owl:Class ;
-    rdfs:comment "Conjunto coreográfico asociado a una festividad." .
+:Comparsa a owl:Class ;
+    rdfs:label "Comparsa"@es .
 
-:PersonajeRitual rdf:type owl:Class ;
-    rdfs:comment "Figura simbólica que actúa o encarna funciones dentro de la festividad." .
+:EntidadVenerada a owl:Class ;
+    rdfs:label "Entidad venerada"@es .
 
-:Danzante rdf:type owl:Class ;
+:TiempoRitual a owl:Class ;
+    rdfs:label "Tiempo ritual"@es .
+
+:Procesion a owl:Class ;
+    rdfs:label "Procesión"@es .
+
+:Santuario a owl:Class ;
+    rdfs:label "Santuario"@es .
+
+:ObjetoRitual a owl:Class ;
+    rdfs:label "Objeto ritual"@es .
+
+:VestimentaRitual a owl:Class ;
+    rdfs:label "Vestimenta ritual"@es .
+
+:RolRitual a owl:Class ;
+    rdfs:label "Rol ritual"@es .
+
+:RutaPeregrinacion a owl:Class ;
+    rdfs:label "Ruta de peregrinación"@es .
+
+:LugarDePaso a owl:Class ;
+    rdfs:label "Lugar de paso"@es .
+
+:Iglesia a owl:Class ;
+    rdfs:label "Iglesia"@es .
+
+:Comunidad a owl:Class ;
+    rdfs:label "Comunidad"@es .
+
+:PersonaParticipante a owl:Class ;
+    rdfs:label "Persona participante"@es .
+
+:RecursoMedial a owl:Class ;
+    rdfs:label "Recurso medial"@es .
+
+#################################################################
+### 2. SUBCLASES
+#################################################################
+
+:DanzaQhapaqQolla a owl:Class ;
+    rdfs:subClassOf :Danza ;
+    rdfs:label "Danza Qhapaq Qolla"@es .
+
+:DanzaUkuku a owl:Class ;
+    rdfs:subClassOf :Danza ;
+    rdfs:label "Danza Ukuku"@es .
+
+:PersonajeUkuku a owl:Class ;
     rdfs:subClassOf :PersonajeRitual ;
-    rdfs:comment "Participante que interpreta una danza específica." .
+    rdfs:label "Personaje Ukuku"@es .
 
-:IndividuoDeDanza rdf:type owl:Class ;
-    rdfs:subClassOf :Danzante ;
-    rdfs:comment "Representación específica de una danza (p. ej., cada Qhapaq Qolla)." .
+:PersonajeQolla a owl:Class ;
+    rdfs:subClassOf :PersonajeRitual ;
+    rdfs:label "Personaje Qolla"@es .
 
-:RolRitual rdf:type owl:Class ;
-    rdfs:comment "Funciones simbólicas de un personaje (protector, mensajero, mediador, etc.)." .
+:MascararRitual a owl:Class ;
+    rdfs:subClassOf :ObjetoRitual ;
+    rdfs:label "Máscara ritual"@es .
 
-:ObjetoRitual rdf:type owl:Class ;
-    rdfs:comment "Elementos materiales utilizados en la actuación ritual (máscara, látigo, vestimenta)." .
+:RolGuardian a owl:Class ;
+    rdfs:subClassOf :RolRitual ;
+    rdfs:label "Rol de guardián"@es .
 
-:Comunidad rdf:type owl:Class ;
-    rdfs:comment "Colectivo social que participa en la festividad." .
+:SegmentoRitual a owl:Class ;
+    rdfs:subClassOf :TiempoRitual ;
+    rdfs:label "Segmento ritual"@es .
 
-:Comparsa rdf:type owl:Class ;
-    rdfs:comment "Agrupación de danzantes o actores rituales que representan una misma nación o estilo." .
+:Foto a owl:Class ;
+    rdfs:subClassOf :RecursoMedial ;
+    rdfs:label "Fotografía"@es .
 
-:LugarSagrado rdf:type owl:Class ;
-    rdfs:comment "Espacio geográfico con significación ritual." .
+:Video a owl:Class ;
+    rdfs:subClassOf :RecursoMedial ;
+    rdfs:label "Video"@es .
 
-:Documento rdf:type owl:Class ;
-    rdfs:comment "Recurso documental (foto, video, audio, texto) que registra la práctica." .
+:Audio a owl:Class ;
+    rdfs:subClassOf :RecursoMedial ;
+    rdfs:label "Audio"@es .
 
-############################################################
-#  OBJECT PROPERTIES
-############################################################
+:Documento a owl:Class ;
+    rdfs:subClassOf :RecursoMedial ;
+    rdfs:label "Documento"@es .
 
-:formaParteDe rdf:type owl:ObjectProperty ;
-    rdfs:domain :Danza ;
-    rdfs:range :Festividad ;
-    rdfs:comment "Una danza pertenece a una festividad." .
+#################################################################
+### 3. PROPIEDADES DE OBJETO
+#################################################################
 
-:sePresentaEn rdf:type owl:ObjectProperty ;
-    rdfs:domain :Danza ;
-    rdfs:range :Evento ;
-    rdfs:comment "Indica el evento donde se ejecuta una danza." .
+:realizaDanza a owl:ObjectProperty ;
+    rdfs:label "realiza danza"@es .
 
-:interpreta rdf:type owl:ObjectProperty ;
-    rdfs:domain :IndividuoDeDanza ;
-    rdfs:range :Danza ;
-    rdfs:comment "Un individuo interpreta una danza." .
+:perteneceAComparsa a owl:ObjectProperty ;
+    rdfs:label "pertenece a comparsa"@es .
 
-:participaEn rdf:type owl:ObjectProperty ;
-    rdfs:domain :PersonajeRitual ;
-    rdfs:range :Evento ;
-    rdfs:comment "Un personaje ritual participa en un evento específico." .
+:SeCelebraEn a owl:ObjectProperty ;
+    rdfs:label "se celebra en"@es .
 
-:perteneceA rdf:type owl:ObjectProperty ;
-    rdfs:domain :PersonajeRitual ;
-    rdfs:range :Comunidad ;
-    rdfs:comment "Vincula un personaje con la comunidad que lo respalda." .
+:ocurreDurante a owl:ObjectProperty ;
+    rdfs:label "ocurre durante"@es .
 
-:ocurreEn rdf:type owl:ObjectProperty ;
-    rdfs:domain :Evento ;
-    rdfs:range :LugarSagrado ;
-    rdfs:comment "Localización ritual del evento." .
+:representaEntidad a owl:ObjectProperty ;
+    rdfs:label "representa entidad"@es .
 
-:documenta rdf:type owl:ObjectProperty ;
-    rdfs:domain :Documento ;
-    rdfs:range :Evento ;
-    rdfs:comment "El documento registra un evento." .
+:usaObjetoRitual a owl:ObjectProperty ;
+    rdfs:label "usa objeto ritual"@es .
 
-:cumpleRol rdf:type owl:ObjectProperty ;
-    rdfs:domain :PersonajeRitual ;
-    rdfs:range :RolRitual ;
-    rdfs:comment "Relaciona un personaje con su función simbólica." .
+:UbicadoEn a owl:ObjectProperty ;
+    rdfs:label "ubicado en"@es .
 
-:usaObjeto rdf:type owl:ObjectProperty ;
-    rdfs:domain :PersonajeRitual ;
-    rdfs:range :ObjetoRitual ;
-    rdfs:comment "Vincula al personaje con objetos rituales." .
+:estaEnLugar a owl:ObjectProperty ;
+    rdfs:label "está en lugar"@es .
 
-:perteneceAComparsa rdf:type owl:ObjectProperty ;
-    rdfs:domain :IndividuoDeDanza ;
-    rdfs:range :Comparsa ;
-    rdfs:comment "Agrupa a danzantes dentro de una comparsa." .
+:relacionadoCon a owl:ObjectProperty ;
+    rdfs:label "relacionado con"@es .
 
-############################################################
-#  DATATYPE PROPERTIES
-############################################################
+:narradoPor a owl:ObjectProperty ;
+    rdfs:label "narrado por"@es .
 
-:fechaRegistro rdf:type owl:DatatypeProperty ;
-    rdfs:domain :Documento ;
-    rdfs:range xsd:dateTime ;
-    rdfs:comment "Fecha del documento." .
+:documentaA a owl:ObjectProperty ;
+    rdfs:label "documenta a"@es .
 
-############################################################
-#  INDIVIDUALS
-############################################################
+:capturadoEnSegmento a owl:ObjectProperty ;
+    rdfs:label "capturado en segmento ritual"@es .
 
-### FESTIVIDAD
+:tieneRecursoMedial a owl:ObjectProperty ;
+    rdfs:label "tiene recurso medial"@es .
 
-:QoyllurRiti rdf:type :Festividad ;
-    rdfs:label "Señor de Qoyllur Rit’i" ;
-    owl:sameAs <https://www.wikidata.org/wiki/Q323697> ;
-    rdfs:comment "Peregrinación andina al santuario de Sinakara." .
+#################################################################
+### 3bis. PROPIEDADES DE ANOTACIÓN (PARA TEXTO / EMBEDDINGS)
+#################################################################
 
-### LUGAR
+:descripcionBreve a owl:AnnotationProperty ;
+    rdfs:label "Descripción breve"@es .
 
-:SantuarioSinakara rdf:type :LugarSagrado ;
-    rdfs:label "Santuario de Sinakara" .
+:descripcionEtnografica a owl:AnnotationProperty ;
+    rdfs:label "Descripción etnográfica"@es .
 
-### EVENTOS
+:fuenteTexto a owl:AnnotationProperty ;
+    rdfs:label "Fuente del texto"@es .
 
-:EntradaNaciones rdf:type :Evento ;
-    :ocurreEn :SantuarioSinakara ;
-    rdfs:label "Entrada de las Naciones" .
+#################################################################
+### 4. INDIVIDUOS (INSTANCIAS)
+#################################################################
 
-### DANZAS
+### Festividades
+:FestividadQoylluriti a :Festividad ;
+    rdfs:label "Festividad del Señor de Qoyllur Rit'i"@es .
 
-:DanzaQolla rdf:type :Danza ;
-    :formaParteDe :QoyllurRiti ;
-    :sePresentaEn :EntradaNaciones ;
-    rdfs:label "Danza de los Qollas" .
+:FestividadVirgenCarmenPaucartambo a :Festividad ;
+    rdfs:label "Festividad de la Virgen del Carmen de Paucartambo"@es .
 
-:DanzaUkuku rdf:type :Danza ;
-    :formaParteDe :QoyllurRiti ;
-    :sePresentaEn :EntradaNaciones ;
-    rdfs:label "Danza de los Ukukus" .
+### Lugares
+:SantuarioQoylluriti a :Santuario ;
+    rdfs:label "Santuario del Señor de Qoyllur Rit'i"@es .
 
-### COMUNIDADES
+:IglesiaPaucartambo a :Iglesia ;
+    rdfs:label "Iglesia de Paucartambo"@es .
 
-:ComunidadQolla rdf:type :Comunidad ;
-    rdfs:label "Comunidad Qolla" .
+:EntradaPrincipalIglesia a :LugarDePaso ;
+    rdfs:label "Entrada principal de la iglesia"@es .
 
-:ComunidadPaucartambo rdf:type :Comunidad ;
-    rdfs:label "Comunidad de Paucartambo" .
+### Tiempos / segmentos rituales
+:MomentoAlba a :SegmentoRitual ;
+    rdfs:label "Momento del alba"@es .
 
-### ROLES
+### Comparsas
+:ComparsaUkukus2024 a :Comparsa ;
+    rdfs:label "Comparsa Ukukus 2024"@es .
 
-:RolGuardián rdf:type :RolRitual ;
-    rdfs:label "Guardián" .
+### Personas y personajes
+:PersonajeUkuku1 a :PersonajeUkuku ;
+    rdfs:label "Ukuku (individuo 1)"@es .
 
-### OBJETOS
+:PersonajeQolla1 a :PersonajeQolla ;
+    rdfs:label "Qolla (individuo 1)"@es .
 
-:MáscaraUkuku rdf:type :ObjetoRitual ;
-    rdfs:label "Máscara de Ukuku" .
+:UkukuTestimonio1 a :PersonaParticipante ;
+    rdfs:label "Persona que relata como Ukuku"@es .
 
-### PERSONAJES
+### Danzas específicas
+:DanzaUkukuInstancia a :DanzaUkuku ;
+    rdfs:label "Danza Ukuku (instancia)"@es .
 
-:PersonajeQolla rdf:type :PersonajeRitual ;
-    :participaEn :EntradaNaciones ;
-    :perteneceA :ComunidadQolla ;
-    rdfs:label "Personaje Qolla" .
+:DanzaQollaInstancia a :DanzaQhapaqQolla ;
+    rdfs:label "Danza Qhapaq Qolla (instancia)"@es .
 
-:PersonajeUkuku rdf:type :PersonajeRitual ;
-    :participaEn :EntradaNaciones ;
-    :perteneceA :ComunidadPaucartambo ;
-    :cumpleRol :RolGuardián ;
-    :usaObjeto :MáscaraUkuku ;
-    rdfs:label "Personaje Ukuku" .
+### Objetos y vestimenta
+:MascararUkuku1 a :MascararRitual ;
+    rdfs:label "Máscara de Ukuku"@es .
 
-### INDIVIDUOS DE DANZA
+:VestimentaUkuku1 a :VestimentaRitual ;
+    rdfs:label "Vestimenta ritual de Ukuku"@es .
 
-:IndividuoQolla1 rdf:type :IndividuoDeDanza ;
-    :interpreta :DanzaQolla ;
-    rdfs:label "Qolla 1" .
+### Comunidad
+:ComunidadPaucartambo a :Comunidad ;
+    rdfs:label "Comunidad de Paucartambo"@es .
 
-:IndividuoUkuku1 rdf:type :IndividuoDeDanza ;
-    :interpreta :DanzaUkuku ;
+### Recursos mediales de ejemplo
+:FotoEntradaNaciones_001 a :Foto ;
+    rdfs:label "Foto de la Entrada de Naciones al alba"@es .
+
+:AudioTestimonioUkuku_001 a :Audio ;
+    rdfs:label "Audio de testimonio de Ukuku"@es .
+
+:DocumentoProgramaFiesta_2024 a :Documento ;
+    rdfs:label "Programa oficial de la fiesta 2024"@es .
+
+#################################################################
+### 5. RELACIONES (AXIOMAS)
+#################################################################
+
+### Personajes → danzas, comparsas, objetos, entidades
+:PersonajeUkuku1
+    :realizaDanza :DanzaUkukuInstancia ;
     :perteneceAComparsa :ComparsaUkukus2024 ;
-    rdfs:label "Ukuku 1" .
+    :usaObjetoRitual :MascararUkuku1 ;
+    :representaEntidad :EntidadVenerada .
 
-:ComparsaUkukus2024 rdf:type :Comparsa ;
-    rdfs:label "Comparsa Ukukus 2024" .
+:PersonajeQolla1
+    :realizaDanza :DanzaQollaInstancia ;
+    :perteneceAComparsa :ComparsaUkukus2024 .
+
+### Festividades → lugares y tiempos
+:FestividadQoylluriti
+    :SeCelebraEn :SantuarioQoylluriti ;
+    :ocurreDurante :MomentoAlba ;
+    :tieneRecursoMedial :FotoEntradaNaciones_001 .
+
+:FestividadVirgenCarmenPaucartambo
+    :SeCelebraEn :IglesiaPaucartambo ;
+    :ocurreDurante :MomentoAlba ;
+    :tieneRecursoMedial :DocumentoProgramaFiesta_2024 .
+
+### Procesiones, rutas, lugares
+:EntradaDeNaciones a :Procesion ;
+    rdfs:label "Entrada de Naciones"@es ;
+    :ocurreDurante :MomentoAlba ;
+    :estaEnLugar :EntradaPrincipalIglesia .
+
+### Comunidad → festividad
+:ComunidadPaucartambo :relacionadoCon :FestividadQoylluriti .
+
+### Testimonios y recursos mediales
+:FestividadQoylluriti :narradoPor :UkukuTestimonio1 .
+
+:FotoEntradaNaciones_001
+    :documentaA :EntradaDeNaciones ;
+    :capturadoEnSegmento :MomentoAlba .
+
+:AudioTestimonioUkuku_001
+    :documentaA :FestividadQoylluriti ;
+    :capturadoEnSegmento :MomentoAlba .
+
+#################################################################
+### 6. EJEMPLOS DE TEXTO PARA EMBEDDINGS
+#################################################################
+
+:PersonajeUkuku
+    :descripcionBreve "Figura ritual que participa como guardián, penitente y mediador en la peregrinación al Señor de Qoyllur Rit’i."@es ;
+    :descripcionEtnografica "El Ukuku combina devoción, disciplina y juego. Porta máscara de oso, vestimenta gruesa de lana y suele custodiar a los peregrinos en los tramos de mayor riesgo del camino hacia el santuario."@es ;
+    :fuenteTexto "Notas de trabajo de campo, Qoyllur Rit’i, campaña 2023."@es .
+
+:FestividadQoylluriti
+    :descripcionBreve "Peregrinación andina al santuario del Señor de Qoyllur Rit’i, que reúne a naciones de danzantes y comunidades de la región cusqueña."@es ;
+    :fuenteTexto "Resumen elaborado para el proyecto kg-llm festividades."@es .
