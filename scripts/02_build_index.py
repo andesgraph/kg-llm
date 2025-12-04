@@ -2,36 +2,30 @@ import json
 import numpy as np
 from sentence_transformers import SentenceTransformer
 import yaml
-import os
 
-cfg = yaml.safe_load(open("/home/pi/Documents/kg-llm/config.yaml", encoding="utf-8"))
-ENT_FILE = cfg["paths"]["entities"]
-OUT_VEC = cfg["paths"]["index"]
+cfg = yaml.safe_load(open("config.yaml"))
 
-def build_index():
-    print("Cargando modelo...")
-    model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+ENT = cfg["paths"]["expanded"]
+OUT_VEC = cfg["paths"]["vectors"]
 
-    print("Leyendo entidades...")
-    entities = json.load(open(ENT_FILE, "r", encoding="utf-8"))
+model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
-    uris = []
-    vectors = []
+# cargar entidades
+entities = json.load(open(ENT, "r", encoding="utf-8"))
 
-    for ent in entities:
-        text = ent.get("text", ent["label"])  # fallback si algo falta
-        embedding = model.encode(text, convert_to_numpy=True)
-        
-        uris.append(ent["uri"])
-        vectors.append(embedding)
+texts = []
+ids = []
 
-    vectors = np.array(vectors)
+for e in entities:
+    text = e["label"] + " " + e.get("comment", "")
+    texts.append(text)
+    ids.append(e["uri"])
 
-    os.makedirs(os.path.dirname(OUT_VEC), exist_ok=True)
-    np.savez(OUT_VEC, uris=uris, vectors=vectors)
+# generar embeddings
+vectors = model.encode(texts, convert_to_numpy=True)
 
-    print(f"Índice generado con {len(uris)} entidades.")
-    print(f"Guardado en {OUT_VEC}")
+# guardar correctamente
+np.savez(OUT_VEC, vectors=vectors, ids=np.array(ids))
 
-if __name__ == "__main__":
-    build_index()
+print("Índice generado con:", len(ids), "entidades.")
+print("Guardado en:", OUT_VEC)
