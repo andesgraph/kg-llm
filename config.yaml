@@ -2,7 +2,7 @@ paths:
   ttl: "/home/pi/Documents/kg-llm/data/grafo.ttl"
   entities: "/home/pi/Documents/kg-llm/index/entities.json"
   expanded: "/home/pi/Documents/kg-llm/index/expanded.json"
-  vectors "/home/pi/Documents/kg-llm/index/index.npz"
+  vectors: "/home/pi/Documents/kg-llm/index/index.npz"
 
 model:
   path: "/home/pi/Documents/kg-llm/modelos/qwen2.5-0.5b.gguf"
