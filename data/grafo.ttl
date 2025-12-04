@@ -286,4 +286,4 @@
 
 :FestividadQoylluriti
     :descripcionBreve "Peregrinación andina al santuario del Señor de Qoyllur Rit’i, que reúne a naciones de danzantes y comunidades de la región cusqueña."@es ;
-    :fuenteTexto "Resumen elaborado para el proyecto kg-llm-festividades."@es .
+    :fuenteTexto "Resumen elaborado para el proyecto kg-llm festividades."@es .
