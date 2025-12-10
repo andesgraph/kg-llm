@@ -74,6 +74,12 @@ Notas de campo, campaña 2023.
 
 ### 2.3. Anotar un individuo (ejemplo: `PersonajeUkuku1`)
 
+1. Entities → Individuals.
+2. Seleccionar el individuo.
+3. Pestaña **Annotations**.
+4. Agregar:
+
+
 **descripcionBreve**  
 Danzante que interpreta al Ukuku en la comparsa Ukukus 2024.
 
