@@ -10,24 +10,10 @@
  ] .
 
 #################################################################
-##### NOTAS PARA EL EQUIPO
-##### - Este archivo es un grafo RDF en Turtle (TTL).
-##### - Los comentarios (#####) no cambian el grafo: solo documentan.
-##### - En Protégé: guardar siempre en TTL y hacer commit del mismo archivo.
-#################################################################
-
-#################################################################
 #    Annotation properties
 #################################################################
 
 ###  http://example.org/festividades#descripcionBreve
-#################################################################
-##### SECCIÓN: PROPIEDADES DE ANOTACIÓN (texto)
-##### - Sirven para escribir DESCRIPCIONES y METADATOS en clases/individuos.
-##### - Se usan para construir el campo `text` y hacer embeddings.
-##### - Ejemplos típicos: rdfs:label, rdfs:comment, :descripcionBreve, :descripcionEtnografica, :fuenteTexto.
-#################################################################
-
 :descripcionBreve rdf:type owl:AnnotationProperty ;
                   rdfs:label "Descripción breve"@es .
 
@@ -44,13 +30,6 @@
 
 #################################################################
 #    Object Properties
-#################################################################
-
-#################################################################
-##### SECCIÓN: PROPIEDADES DE OBJETO (relaciones)
-##### - Conectan una entidad con otra entidad (sujeto → objeto).
-##### - Ejemplo: :documentaA (RecursoMedial → Festividad/Procesion/etc.).
-##### - Si defines rdfs:domain y rdfs:range ayudas a validar y a mantener consistencia.
 #################################################################
 
 ###  http://example.org/festividades#SeCelebraEn
@@ -120,19 +99,6 @@
 
 #################################################################
 #    Classes
-#################################################################
-
-#################################################################
-##### SECCIÓN: CLASES
-##### - Una CLASE define un tipo general (categoría). Ej.: :Festividad, :PersonajeRitual, :Foto.
-##### - NO es un caso concreto: los casos concretos son INDIVIDUOS.
-#################################################################
-
-#################################################################
-##### NOTA: SUBCLASES (rdfs:subClassOf)
-##### - Una SUBCLASE es un tipo más específico de una clase.
-##### - Ej.: :PersonajeUkuku rdfs:subClassOf :PersonajeRitual.
-##### - Hereda las propiedades/interpretación de la clase madre.
 #################################################################
 
 ###  http://example.org/festividades#Audio
@@ -231,7 +197,7 @@
                 rdfs:subClassOf :PersonajeRitual ;
                 :descripcionBreve "Figura enmascarada que representa al Ukuku en festividades andinas." ;
                 :descripcionEtnografica "El Ukuku combina devoción, disciplina y juego. Porta máscara de oso, vestimenta gruesa de lana y suele custodiar a los peregrinos en los tramos de mayor riesgo del camino hacia el santuario."@es ;
-                :fuenteTexto "Notas de trabajo de campo, Qoyllur Rit’i, campaña 2025."@es ;
+                :fuenteTexto "Notas de trabajo de campo, Qoyllur Rit’i, campaña 2023."@es ;
                 rdfs:label "Personaje Ukuku"@es .
 
 
@@ -290,12 +256,6 @@
 
 #################################################################
 #    Individuals
-#################################################################
-
-#################################################################
-##### SECCIÓN: INDIVIDUOS (INSTANCIAS)
-##### - Un INDIVIDUO representa algo concreto: una festividad específica, un lugar específico, una foto concreta, etc.
-##### - En Protégé suelen aparecer también como owl:NamedIndividual.
 #################################################################
 
 ###  http://example.org/festividades#AudioTestimonioUkuku_001
