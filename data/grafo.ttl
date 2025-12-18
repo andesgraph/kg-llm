@@ -10,7 +10,7 @@
  ] .
 
 #################################################################
-##### NOTAS PARA EL EQUIPO
+##### NOTAS PARA EL EQUIPO :)
 ##### - Este archivo es un grafo RDF en Turtle (TTL).
 ##### - Los comentarios (#####) no cambian el grafo: solo documentan.
 ##### - En Protégé: guardar siempre en TTL y hacer commit del mismo archivo.
