@@ -1,508 +1,467 @@
-@prefix : <http://example.org/festividades#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix :    <http://example.org/festividades#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://example.org/festividades#> .
-
-[ rdf:type owl:Ontology
- ] .
 
 #################################################################
-##### NOTAS PARA EL EQUIPO :)
-##### - Este archivo es un grafo RDF en Turtle (TTL).
-##### - Los comentarios (#####) no cambian el grafo: solo documentan.
-##### - En Protégé: guardar siempre en TTL y hacer commit del mismo archivo.
+### ONTOLOGÍA
+### Una ontología define el vocabulario común:
+### qué tipos de cosas existen y cómo se relacionan.
 #################################################################
 
-#################################################################
-#    Annotation properties
-#################################################################
-
-###  http://example.org/festividades#descripcionBreve
-#################################################################
-##### SECCIÓN: PROPIEDADES DE ANOTACIÓN (texto)
-##### - Sirven para escribir DESCRIPCIONES y METADATOS en clases/individuos.
-##### - Se usan para construir el campo `text` y hacer embeddings.
-##### - Ejemplos típicos: rdfs:label, rdfs:comment, :descripcionBreve, :descripcionEtnografica, :fuenteTexto.
-#################################################################
-
-:descripcionBreve rdf:type owl:AnnotationProperty ;
-                  rdfs:label "Descripción breve"@es .
-
-
-###  http://example.org/festividades#descripcionEtnografica
-:descripcionEtnografica rdf:type owl:AnnotationProperty ;
-                        rdfs:label "Descripción etnográfica"@es .
-
-
-###  http://example.org/festividades#fuenteTexto
-:fuenteTexto rdf:type owl:AnnotationProperty ;
-             rdfs:label "Fuente del texto"@es .
-
+:OntologiaFestividades a owl:Ontology ;
+  rdfs:label "Ontología esencial de festividades andinas"@es ;
+  rdfs:comment "Ontología para describir festividades, eventos rituales, lugares, comunidades y recursos mediales asociados a Qoyllur Rit’i y la Virgen del Carmen."@es .
 
 #################################################################
-#    Object Properties
+### GUÍA RÁPIDA PARA EL EQUIPO (LEER ANTES DE EDITAR)
+### Este TTL es “esencial”: contiene lo mínimo profesional para
+### (1) tener un grafo navegable y consistente, y (2) alimentar RAG.
+###
+### En este archivo verás:
+### - CLASES: tipos generales (Festividad, Lugar, EventoRitual, etc.)
+### - PROPIEDADES: relaciones (object properties) y datos simples (datatype)
+### - INDIVIDUOS: cosas concretas del mundo real (Paucartambo, Colque Punku, etc.)
+###
+### Nota: rdfs:label y descripciones están en español (@es).
 #################################################################
 
 #################################################################
-##### SECCIÓN: PROPIEDADES DE OBJETO (relaciones)
-##### - Conectan una entidad con otra entidad (sujeto → objeto).
-##### - Ejemplo: :documentaA (RecursoMedial → Festividad/Procesion/etc.).
-##### - Si defines rdfs:domain y rdfs:range ayudas a validar y a mantener consistencia.
-#################################################################
-
-###  http://example.org/festividades#SeCelebraEn
-:SeCelebraEn rdf:type owl:ObjectProperty ;
-             rdfs:label "se celebra en"@es .
-
-
-###  http://example.org/festividades#UbicadoEn
-:UbicadoEn rdf:type owl:ObjectProperty ;
-           rdfs:label "ubicado en"@es .
-
-
-###  http://example.org/festividades#capturadoEnSegmento
-:capturadoEnSegmento rdf:type owl:ObjectProperty ;
-                     rdfs:label "capturado en segmento ritual"@es .
-
-
-###  http://example.org/festividades#documentaA
-:documentaA rdf:type owl:ObjectProperty ;
-            rdfs:label "documenta a"@es .
-
-
-###  http://example.org/festividades#estaEnLugar
-:estaEnLugar rdf:type owl:ObjectProperty ;
-             rdfs:label "está en lugar"@es .
-
-
-###  http://example.org/festividades#narradoPor
-:narradoPor rdf:type owl:ObjectProperty ;
-            rdfs:label "narrado por"@es .
-
-
-###  http://example.org/festividades#ocurreDurante
-:ocurreDurante rdf:type owl:ObjectProperty ;
-               rdfs:label "ocurre durante"@es .
-
-
-###  http://example.org/festividades#perteneceAComparsa
-:perteneceAComparsa rdf:type owl:ObjectProperty ;
-                    rdfs:label "pertenece a comparsa"@es .
-
-
-###  http://example.org/festividades#realizaDanza
-:realizaDanza rdf:type owl:ObjectProperty ;
-              rdfs:label "realiza danza"@es .
-
-
-###  http://example.org/festividades#relacionadoCon
-:relacionadoCon rdf:type owl:ObjectProperty ;
-                rdfs:label "relacionado con"@es .
-
-
-###  http://example.org/festividades#representaEntidad
-:representaEntidad rdf:type owl:ObjectProperty ;
-                   rdfs:label "representa entidad"@es .
-
-
-###  http://example.org/festividades#tieneRecursoMedial
-:tieneRecursoMedial rdf:type owl:ObjectProperty ;
-                    rdfs:label "tiene recurso medial"@es .
-
-
-###  http://example.org/festividades#usaObjetoRitual
-:usaObjetoRitual rdf:type owl:ObjectProperty ;
-                 rdfs:label "usa objeto ritual"@es .
-
-
-#################################################################
-#    Classes
+### ¿QUÉ ES UNA CLASE?
+### Una clase (owl:Class) es un “tipo de cosa”.
+### Ej: :Festividad, :Lugar, :EventoRitual, :Foto.
+###
+### ¿QUÉ ES UNA SUBCLASE?
+### Una subclase (rdfs:subClassOf) hereda características del tipo “padre”.
+### Ej: :Procesion rdfs:subClassOf :EventoRitual.
+### Significa: “toda Procesión es un EventoRitual”.
 #################################################################
 
 #################################################################
-##### SECCIÓN: CLASES
-##### - Una CLASE define un tipo general (categoría). Ej.: :Festividad, :PersonajeRitual, :Foto.
-##### - NO es un caso concreto: los casos concretos son INDIVIDUOS.
+### ¿QUÉ ES UN INDIVIDUO?
+### Un individuo (owl:NamedIndividual o “a :Clase”) es una entidad concreta:
+### Ej: :Paucartambo a :Localidad ;  :ColquePunku a :Glaciar ; etc.
+###
+### REGLA PRÁCTICA:
+### - Clases: conceptos generales (tipos).
+### - Individuos: instancias reales (cosas específicas del dominio).
 #################################################################
 
 #################################################################
-##### NOTA: SUBCLASES (rdfs:subClassOf)
-##### - Una SUBCLASE es un tipo más específico de una clase.
-##### - Ej.: :PersonajeUkuku rdfs:subClassOf :PersonajeRitual.
-##### - Hereda las propiedades/interpretación de la clase madre.
-#################################################################
-
-###  http://example.org/festividades#Audio
-:Audio rdf:type owl:Class ;
-       rdfs:subClassOf :RecursoMedial ;
-       rdfs:label "Audio"@es .
-
-
-###  http://example.org/festividades#Comparsa
-:Comparsa rdf:type owl:Class ;
-          rdfs:label "Comparsa"@es .
-
-
-###  http://example.org/festividades#Comunidad
-:Comunidad rdf:type owl:Class ;
-           rdfs:label "Comunidad"@es .
-
-
-###  http://example.org/festividades#Danza
-:Danza rdf:type owl:Class ;
-       rdfs:label "Danza"@es .
-
-
-###  http://example.org/festividades#DanzaQhapaqQolla
-:DanzaQhapaqQolla rdf:type owl:Class ;
-                  rdfs:subClassOf :Danza ;
-                  rdfs:label "Danza Qhapaq Qolla"@es .
-
-
-###  http://example.org/festividades#DanzaUkuku
-:DanzaUkuku rdf:type owl:Class ;
-            rdfs:subClassOf :Danza ;
-            rdfs:label "Danza Ukuku"@es .
-
-
-###  http://example.org/festividades#Documento
-:Documento rdf:type owl:Class ;
-           rdfs:subClassOf :RecursoMedial ;
-           rdfs:label "Documento"@es .
-
-
-###  http://example.org/festividades#EntidadVenerada
-:EntidadVenerada rdf:type owl:Class .
-
-
-###  http://example.org/festividades#Festividad
-:Festividad rdf:type owl:Class ;
-            rdfs:label "Festividad"@es .
-
-
-###  http://example.org/festividades#Foto
-:Foto rdf:type owl:Class ;
-      rdfs:subClassOf :RecursoMedial ;
-      rdfs:label "Fotografía"@es .
-
-
-###  http://example.org/festividades#Iglesia
-:Iglesia rdf:type owl:Class ;
-         rdfs:label "Iglesia"@es .
-
-
-###  http://example.org/festividades#LugarDePaso
-:LugarDePaso rdf:type owl:Class ;
-             rdfs:label "Lugar de paso"@es .
-
-
-###  http://example.org/festividades#MascararRitual
-:MascararRitual rdf:type owl:Class ;
-                rdfs:subClassOf :ObjetoRitual ;
-                rdfs:label "Máscara ritual"@es .
-
-
-###  http://example.org/festividades#ObjetoRitual
-:ObjetoRitual rdf:type owl:Class ;
-              rdfs:label "Objeto ritual"@es .
-
-
-###  http://example.org/festividades#PersonaParticipante
-:PersonaParticipante rdf:type owl:Class ;
-                     rdfs:label "Persona participante"@es .
-
-
-###  http://example.org/festividades#PersonajeQolla
-:PersonajeQolla rdf:type owl:Class ;
-                rdfs:subClassOf :PersonajeRitual ;
-                rdfs:label "Personaje Qolla"@es .
-
-
-###  http://example.org/festividades#PersonajeRitual
-:PersonajeRitual rdf:type owl:Class ;
-                 rdfs:label "Personaje ritual"@es .
-
-
-###  http://example.org/festividades#PersonajeUkuku
-:PersonajeUkuku rdf:type owl:Class ;
-                rdfs:subClassOf :PersonajeRitual ;
-                :descripcionBreve "Figura enmascarada que representa al Ukuku en festividades andinas." ;
-                :descripcionEtnografica "El Ukuku combina devoción, disciplina y juego. Porta máscara de oso, vestimenta gruesa de lana y suele custodiar a los peregrinos en los tramos de mayor riesgo del camino hacia el santuario."@es ;
-                :fuenteTexto "Notas de trabajo de campo, Qoyllur Rit’i, campaña 2025."@es ;
-                rdfs:label "Personaje Ukuku"@es .
-
-
-###  http://example.org/festividades#Procesion
-:Procesion rdf:type owl:Class ;
-           rdfs:label "Procesión"@es .
-
-
-###  http://example.org/festividades#RecursoMedial
-:RecursoMedial rdf:type owl:Class ;
-               rdfs:label "Recurso medial"@es .
-
-
-###  http://example.org/festividades#RolGuardian
-:RolGuardian rdf:type owl:Class ;
-             rdfs:subClassOf :RolRitual ;
-             rdfs:label "Rol de guardián"@es .
-
-
-###  http://example.org/festividades#RolRitual
-:RolRitual rdf:type owl:Class ;
-           rdfs:label "Rol ritual"@es .
-
-
-###  http://example.org/festividades#RutaPeregrinacion
-:RutaPeregrinacion rdf:type owl:Class ;
-                   rdfs:label "Ruta de peregrinación"@es .
-
-
-###  http://example.org/festividades#Santuario
-:Santuario rdf:type owl:Class ;
-           rdfs:label "Santuario"@es .
-
-
-###  http://example.org/festividades#SegmentoRitual
-:SegmentoRitual rdf:type owl:Class ;
-                rdfs:subClassOf :TiempoRitual ;
-                rdfs:label "Segmento ritual"@es .
-
-
-###  http://example.org/festividades#TiempoRitual
-:TiempoRitual rdf:type owl:Class ;
-              rdfs:label "Tiempo ritual"@es .
-
-
-###  http://example.org/festividades#VestimentaRitual
-:VestimentaRitual rdf:type owl:Class ;
-                  rdfs:label "Vestimenta ritual"@es .
-
-
-###  http://example.org/festividades#Video
-:Video rdf:type owl:Class ;
-       rdfs:subClassOf :RecursoMedial ;
-       rdfs:label "Video"@es .
-
-
-#################################################################
-#    Individuals
+### REGLAS DE MODELADO (MUY IMPORTANTES)
+###
+### 1) EVENTO vs TIEMPO (NO CONFUNDIR)
+### - :EventoRitual = “algo que pasa” (acción/actividad) y suele poder ubicarse.
+###   Ej: “Bajada desde Colque Punku”, “Entrada de Naciones”, “Procesión principal”.
+###
+### - :TiempoRitual / :SegmentoRitual = “cuándo” (franja temporal significativa).
+###   Ej: “Alba”, “Noche”, “Víspera”, “Día central”.
+###
+### RELACIONES CORRECTAS:
+### - Un EventoRitual se conecta a un Lugar con :estaEnLugar.
+### - Un EventoRitual puede (si aplica) conectarse a un Tiempo con :ocurreDurante.
+###
+### ANTI-PATRÓN (EVITAR):
+### - No usar :ocurreDurante para decir “la festividad ocurre durante el alba”.
+###   La festividad contiene muchos eventos y tiempos; el “alba” es de eventos,
+###   no del concepto completo de festividad.
+###
+### 2) FESTIVIDAD: DÓNDE SE CELEBRA
+### - La Festividad se conecta a Lugar(es) con :SeCelebraEn.
+###   Ej: Virgen del Carmen -> Paucartambo + Iglesia.
+###       Qoyllur Rit’i -> Sinakara + Santuario.
+###
+### 3) RECURSO MEDIAL (FOTO/VIDEO/AUDIO/DOC)
+### - Un recurso “documenta” algo con :documentaA (evento, lugar o festividad).
+### - Debe tener código estable (:codigoRecurso) y ruta/url (:rutaArchivo).
+### - Debe tener fecha de captura si se conoce (:fechaCaptura).
 #################################################################
 
 #################################################################
-##### SECCIÓN: INDIVIDUOS (INSTANCIAS)
-##### - Un INDIVIDUO representa algo concreto: una festividad específica, un lugar específico, una foto concreta, etc.
-##### - En Protégé suelen aparecer también como owl:NamedIndividual.
+### CONVENCIONES DE NOMBRES (CONGELADAS)
+###
+### 1) Clases (Tipos)
+### - PascalCase, sin tildes ni espacios:
+###   :Festividad, :EventoRitual, :EntidadVenerada, :RecursoMedial, :DocumentoTexto
+###
+### 2) Propiedades
+### - camelCase, verbos claros:
+###   :SeCelebraEn, :incluyeEvento, :estaEnLugar, :ocurreDurante, :documentaA
+###
+### 3) Individuos (Entidades reales)
+### - PascalCase o NombreConGuionesBajos si es necesario, sin tildes:
+###   :Paucartambo, :Sinakara, :ColquePunku, :IglesiaPaucartambo
+###
+### 4) Recursos mediales (IDs + código)
+### - IRI del individuo: usar prefijo + tipo + año + correlativo con guiones bajos:
+###   :QOY_FOTO_2025_001, :PAU_AUD_2024_003, :QOY_VID_2023_002
+###
+### - Código humano-legible (annotation):
+###   :codigoRecurso "QOY-FOTO-2025-001" .
+###
+### FORMATO DEL CÓDIGO:
+###   {FEST}-{TIPO}-{AÑO}-{NRO}
+###   FEST: QOY (Qoyllur Rit’i), PAU (Paucartambo)
+###   TIPO: FOTO, VID, AUD, DOC
+###   NRO: 001, 002, 003...
+###
+### 5) Nombres consistentes (IMPORTANTE)
+### - No mezclar :seCelebraEn con :SeCelebraEn.
+### - En este TTL la propiedad oficial es :SeCelebraEn (S mayúscula).
 #################################################################
 
-###  http://example.org/festividades#AudioTestimonioUkuku_001
-:AudioTestimonioUkuku_001 rdf:type owl:NamedIndividual ,
-                                   :Audio ;
-                          :capturadoEnSegmento :MomentoAlba ;
-                          :documentaA :FestividadQoylluriti ;
-                          rdfs:label "Audio de testimonio de Ukuku"@es .
+#################################################################
+### QUÉ EDITAR / QUÉ NO EDITAR (PARA EVITAR CAOS)
+###
+### SE EDITA (equipo de anotación):
+### - rdfs:label (obligatorio)
+### - :descripcionBreve (obligatorio en entidades principales)
+### - :descripcionEtnografica (obligatorio en Nivel A)
+### - :fuenteTexto (obligatorio en Nivel A)
+### - :codigoRecurso, :rutaArchivo, :fechaCaptura (en recursos)
+### - relaciones entre individuos (documentaA, incluyeEvento, SeCelebraEn, etc.)
+### - geo:lat / geo:long en lugares (cuando haya dato)
+###
+### SE EDITA CON CUIDADO (equipo técnico):
+### - definiciones de clases
+### - domain/range de propiedades
+### - creación de nuevas propiedades
+###
+### NO SE EDITA SIN ACUERDO DEL EQUIPO (congelado):
+### - nombres de propiedades ya usadas (rompe scripts y consistencia)
+### - el patrón de códigos de recursos
+### - el significado de A/B/C en :nivelEmbeddings
+#################################################################
 
-
-###  http://example.org/festividades#ComparsaUkukus2024
-:ComparsaUkukus2024 rdf:type owl:NamedIndividual ,
-                             :Comparsa ;
-                    rdfs:label "Comparsa Ukukus 2024"@es .
-
-
-###  http://example.org/festividades#ComunidadPaucartambo
-:ComunidadPaucartambo rdf:type owl:NamedIndividual ,
-                               :Comunidad ;
-                      :relacionadoCon :FestividadQoylluriti ;
-                      rdfs:label "Comunidad de Paucartambo"@es .
-
-
-###  http://example.org/festividades#DanzaQollaInstancia
-:DanzaQollaInstancia rdf:type owl:NamedIndividual ,
-                              :DanzaQhapaqQolla ;
-                     rdfs:label "Danza Qhapaq Qolla (instancia)"@es .
-
-
-###  http://example.org/festividades#DanzaUkukuInstancia
-:DanzaUkukuInstancia rdf:type owl:NamedIndividual ,
-                              :DanzaUkuku ;
-                     rdfs:label "Danza Ukuku (instancia)"@es .
-
-
-###  http://example.org/festividades#DocumentoProgramaFiesta_2024
-:DocumentoProgramaFiesta_2024 rdf:type owl:NamedIndividual ,
-                                       :Documento ;
-                              rdfs:label "Programa oficial de la fiesta 2024"@es .
-
-
-###  http://example.org/festividades#EntidadVenerada
-:EntidadVenerada rdf:type owl:NamedIndividual .
-
-
-###  http://example.org/festividades#EntradaDeNaciones
-:EntradaDeNaciones rdf:type owl:NamedIndividual ,
-                            :Procesion ;
-                   :estaEnLugar :EntradaPrincipalIglesia ;
-                   :ocurreDurante :MomentoAlba ;
-                   rdfs:label "Entrada de Naciones"@es .
-
-
-###  http://example.org/festividades#EntradaPrincipalIglesia
-:EntradaPrincipalIglesia rdf:type owl:NamedIndividual ,
-                                  :LugarDePaso ;
-                         rdfs:label "Entrada principal de la iglesia"@es .
-
-
-###  http://example.org/festividades#FestividadQoylluriti
-:FestividadQoylluriti rdf:type owl:NamedIndividual ,
-                               :Festividad ;
-                      :SeCelebraEn :SantuarioQoylluriti ;
-                      :narradoPor :UkukuTestimonio1 ;
-                      :ocurreDurante :MomentoAlba ;
-                      :tieneRecursoMedial :FotoEntradaNaciones_001 ;
-                      :descripcionBreve "Peregrinación andina al santuario del Señor de Qoyllur Rit’i, que reúne a naciones de danzantes y comunidades de la región cusqueña."@es ;
-                      :fuenteTexto "Resumen elaborado para el proyecto kg-llm festividades."@es ;
-                      rdfs:label "Festividad del Señor de Qoyllur Rit'i"@es .
-
-
-###  http://example.org/festividades#FestividadVirgenCarmenPaucartambo
-:FestividadVirgenCarmenPaucartambo rdf:type owl:NamedIndividual ,
-                                            :Festividad ;
-                                   :SeCelebraEn :IglesiaPaucartambo ;
-                                   :ocurreDurante :MomentoAlba ;
-                                   :tieneRecursoMedial :DocumentoProgramaFiesta_2024 ;
-                                   rdfs:label "Festividad de la Virgen del Carmen de Paucartambo"@es .
-
-
-###  http://example.org/festividades#FotoEntradaNaciones_001
-:FotoEntradaNaciones_001 rdf:type owl:NamedIndividual ,
-                                  :Foto ;
-                         :capturadoEnSegmento :MomentoAlba ;
-                         :documentaA :EntradaDeNaciones ;
-                         rdfs:label "Foto de la Entrada de Naciones al alba"@es .
-
-
-###  http://example.org/festividades#IglesiaPaucartambo
-:IglesiaPaucartambo rdf:type owl:NamedIndividual ,
-                             :Iglesia ;
-                    rdfs:label "Iglesia de Paucartambo"@es .
-
-
-###  http://example.org/festividades#MascararUkuku1
-:MascararUkuku1 rdf:type owl:NamedIndividual ,
-                         :MascararRitual ;
-                rdfs:label "Máscara de Ukuku"@es .
-
-
-###  http://example.org/festividades#MomentoAlba
-:MomentoAlba rdf:type owl:NamedIndividual ,
-                      :SegmentoRitual ;
-             rdfs:label "Momento del alba"@es .
-
-
-###  http://example.org/festividades#PersonajeQolla1
-:PersonajeQolla1 rdf:type owl:NamedIndividual ,
-                          :PersonajeQolla ;
-                 :perteneceAComparsa :ComparsaUkukus2024 ;
-                 :realizaDanza :DanzaQollaInstancia ;
-                 rdfs:label "Qolla (individuo 1)"@es .
-
-
-###  http://example.org/festividades#PersonajeUkuku1
-:PersonajeUkuku1 rdf:type owl:NamedIndividual ,
-                          :PersonajeUkuku ;
-                 :perteneceAComparsa :ComparsaUkukus2024 ;
-                 :realizaDanza :DanzaUkukuInstancia ;
-                 :representaEntidad :EntidadVenerada ;
-                 :usaObjetoRitual :MascararUkuku1 ;
-                 :descripcionBreve "Danzante que interpreta al Ukuku en la comparsa Ukukus 2025." ;
-                 rdfs:label "Ukuku (individuo 1)"@es .
-
-
-###  http://example.org/festividades#SantuarioQoylluriti
-:SantuarioQoylluriti rdf:type owl:NamedIndividual ,
-                              :Santuario ;
-                     rdfs:label "Santuario del Señor de Qoyllur Rit'i"@es .
-
-
-###  http://example.org/festividades#UkukuTestimonio1
-:UkukuTestimonio1 rdf:type owl:NamedIndividual ,
-                           :PersonaParticipante ;
-                  rdfs:label "Persona que relata como Ukuku"@es .
-
-
-###  http://example.org/festividades#VestimentaUkuku1
-:VestimentaUkuku1 rdf:type owl:NamedIndividual ,
-                           :VestimentaRitual ;
-                  rdfs:label "Vestimenta ritual de Ukuku"@es .
+#################################################################
+### DEFINITION OF DONE (DoD) POR NIVEL A/B/C
+###
+### OBJETIVO:
+### - Nivel A: siempre entra a embeddings y al RAG con texto de calidad.
+### - Nivel B: útil para contexto; puede entrar a embeddings si aporta.
+### - Nivel C: estructura/técnico; NO debe generar embeddings ni aparecer en respuestas.
+###
+### NIVEL A (CENTRAL)
+### “Si pregunto en lenguaje natural, debería salir en la respuesta”.
+### Ejemplos: Festividades, Entidades veneradas, lugares centrales, eventos clave,
+### recursos mediales importantes, personajes rituales clave.
+###
+### DoD mínimo (obligatorio):
+### - rdfs:label
+### - :descripcionBreve
+### - :descripcionEtnografica
+### - :fuenteTexto
+### - relaciones clave (según el tipo)
+###   * Festividad: :SeCelebraEn (+ ideal :incluyeEvento)
+###   * EventoRitual: :estaEnLugar (+ opcional :ocurreDurante)
+###   * Lugar: (si aplica) geo:lat geo:long
+###   * RecursoMedial: :codigoRecurso :rutaArchivo :fechaCaptura :documentaA
+###
+### NIVEL B (CONTEXTUAL)
+### “Enriquece, pero rara vez es protagonista”.
+### Ejemplos: comunidades, comparsas específicas, lugares de paso, eventos secundarios.
+###
+### DoD mínimo:
+### - rdfs:label
+### - :descripcionBreve
+### - al menos 1 relación hacia un nodo A (para no quedar huérfano)
+### Opcional:
+### - :descripcionEtnografica si hay buen material
+###
+### ⚪ NIVEL C (ESTRUCTURAL / TÉCNICO)
+### “Ordena el grafo, pero no quiero que el LLM hable de esto”.
+### Ejemplos: clases, nodos puente técnicos, tiempos genéricos sin contenido.
+###
+### DoD mínimo:
+### - rdfs:label
+### Opcional:
+### - rdfs:comment técnico
+###
+### REGLA:
+### - Nivel C NO genera embeddings.
+#################################################################
 
 
 #################################################################
-#    Annotations
+### PROPIEDADES DE ANOTACIÓN
+### Sirven SOLO para texto descriptivo.
+### Estas propiedades alimentan los embeddings del RAG.
 #################################################################
 
-:EntidadVenerada rdfs:label "Entidad venerada"@es .
+:descripcionBreve a owl:AnnotationProperty ;
+  rdfs:label "Descripción breve"@es ;
+  rdfs:comment "Definición corta (1–2 frases). Obligatoria para entidades principales."@es .
+
+:descripcionEtnografica a owl:AnnotationProperty ;
+  rdfs:label "Descripción etnográfica"@es ;
+  rdfs:comment "Descripción ampliada (3–6 frases). Obligatoria para Nivel A."@es .
+
+:fuenteTexto a owl:AnnotationProperty ;
+  rdfs:label "Fuente del texto"@es ;
+  rdfs:comment "Origen del texto: campo, archivo, entrevista, documento, etc."@es .
+
+:nivelEmbeddings a owl:AnnotationProperty ;
+  rdfs:label "Nivel de embeddings"@es ;
+  rdfs:comment "Clasificación para embeddings y RAG: A = entidades centrales (si faltan, el sistema no entiende el dominio); B = entidades contextuales (aportan contexto, pero no son protagonistas); C = entidades estructurales o técnicas (ordenan el grafo y no deben aparecer en respuestas ni generar embeddings)."@es .
+
+
+:codigoRecurso a owl:AnnotationProperty ;
+  rdfs:label "Código de recurso"@es ;
+  rdfs:comment "Identificador estable para fotos, videos, audios y documentos."@es .
+
+:rutaArchivo a owl:AnnotationProperty ;
+  rdfs:label "Ruta de archivo"@es ;
+  rdfs:comment "Ruta local o URL donde se encuentra el recurso."@es .
 
 #################################################################
-# PROPIEDADES DE DATOS PARA COORDENADAS
+### (NUEVO) PROPIEDADES DE DATOS
+### Valores simples (fechas, números).
 #################################################################
 
-:latDecimal  a owl:DatatypeProperty ;
-    rdfs:label "latitud decimal"@es ;
-    rdfs:domain :LugarDePaso , :Santuario , :Iglesia ;
-    rdfs:range  xsd:decimal .
-
-:lonDecimal  a owl:DatatypeProperty ;
-    rdfs:label "longitud decimal"@es ;
-    rdfs:domain :LugarDePaso , :Santuario , :Iglesia ;
-    rdfs:range  xsd:decimal .
-
-:altitudMetros a owl:DatatypeProperty ;
-    rdfs:label "altitud (m s.n.m.)"@es ;
-    rdfs:domain :LugarDePaso , :Santuario ;
-    rdfs:range  xsd:decimal .
+:fechaCaptura a owl:DatatypeProperty ;
+  rdfs:domain :RecursoMedial ;
+  rdfs:range xsd:date ;
+  rdfs:label "fecha de captura"@es ;
+  rdfs:comment "Fecha (ISO) en que se capturó el recurso. Ej: 2025-06-17."@es .
 
 #################################################################
-# EJEMPLOS DE LUGARES CON COORDENADAS
+### CLASES
+### Una clase define un tipo general de entidad.
+### Ejemplo: Festividad, Lugar, EventoRitual.
 #################################################################
+
+:Festividad a owl:Class ;
+  rdfs:label "Festividad"@es ;
+  rdfs:comment "Celebración ritual de carácter anual o periódico."@es .
+
+:EventoRitual a owl:Class ;
+  rdfs:label "Evento ritual"@es ;
+  rdfs:comment "Actividad concreta que ocurre dentro de una festividad."@es .
+
+:Procesion a owl:Class ;
+  rdfs:subClassOf :EventoRitual ;
+  rdfs:label "Procesión"@es ;
+  rdfs:comment "Evento ritual de desplazamiento colectivo."@es .
+
+:TiempoRitual a owl:Class ;
+  rdfs:label "Tiempo ritual"@es ;
+  rdfs:comment "Categoría temporal significativa en el ritual."@es .
+
+:SegmentoRitual a owl:Class ;
+  rdfs:subClassOf :TiempoRitual ;
+  rdfs:label "Segmento ritual"@es ;
+  rdfs:comment "Franja temporal concreta (ej. alba, noche, víspera). Usar con cuidado: no es lo mismo que un evento."@es .
+
+:Comunidad a owl:Class ;
+  rdfs:label "Comunidad"@es ;
+  rdfs:comment "Colectivo social vinculado a una festividad."@es .
+
+:Lugar a owl:Class ;
+  rdfs:label "Lugar"@es ;
+  rdfs:comment "Espacio geográfico o construido."@es .
+
+:Localidad a owl:Class ;
+  rdfs:subClassOf :Lugar ;
+  rdfs:label "Localidad"@es .
+
+:Santuario a owl:Class ;
+  rdfs:subClassOf :Lugar ;
+  rdfs:label "Santuario"@es .
+
+:Iglesia a owl:Class ;
+  rdfs:subClassOf :Lugar ;
+  rdfs:label "Iglesia"@es .
+
+:LugarDePaso a owl:Class ;
+  rdfs:subClassOf :Lugar ;
+  rdfs:label "Lugar de paso"@es .
+
+### (NUEVO) Subtipo útil para precisión (opcional)
+:Glaciar a owl:Class ;
+  rdfs:subClassOf :Lugar ;
+  rdfs:label "Glaciar"@es ;
+  rdfs:comment "Lugar natural de hielo (p. ej. Colque Punku)."@es .
+
+:EntidadVenerada a owl:Class ;
+  rdfs:label "Entidad venerada"@es ;
+  rdfs:comment "Figura sagrada central de una festividad."@es .
+
+:RecursoMedial a owl:Class ;
+  rdfs:label "Recurso medial"@es ;
+  rdfs:comment "Material audiovisual o textual que documenta la festividad."@es .
+
+:Foto a owl:Class ; rdfs:subClassOf :RecursoMedial .
+:Video a owl:Class ; rdfs:subClassOf :RecursoMedial .
+:Audio a owl:Class ; rdfs:subClassOf :RecursoMedial .
+:DocumentoTexto a owl:Class ; rdfs:subClassOf :RecursoMedial .
+
+#################################################################
+### PROPIEDADES DE OBJETO
+### Definen relaciones entre entidades.
+#################################################################
+
+:SeCelebraEn a owl:ObjectProperty ;
+  rdfs:domain :Festividad ;
+  rdfs:range :Lugar ;
+  rdfs:label "se celebra en"@es .
+
+:incluyeEvento a owl:ObjectProperty ;
+  rdfs:domain :Festividad ;
+  rdfs:range :EventoRitual ;
+  rdfs:label "incluye evento"@es .
+
+:ocurreDurante a owl:ObjectProperty ;
+  rdfs:domain :EventoRitual ;
+  rdfs:range :TiempoRitual ;
+  rdfs:label "ocurre durante"@es .
+
+:estaEnLugar a owl:ObjectProperty ;
+  rdfs:domain :EventoRitual ;
+  rdfs:range :Lugar ;
+  rdfs:label "está en lugar"@es .
+
+:relacionadoCon a owl:ObjectProperty ;
+  rdfs:domain :Comunidad ;
+  rdfs:range :Festividad ;
+  rdfs:label "relacionado con"@es .
+
+:tieneRecursoMedial a owl:ObjectProperty ;
+  rdfs:domain :Festividad ;
+  rdfs:range :RecursoMedial ;
+  rdfs:label "tiene recurso medial"@es .
+
+:documentaA a owl:ObjectProperty ;
+  rdfs:domain :RecursoMedial ;
+  rdfs:range owl:Thing ;
+  rdfs:label "documenta a"@es .
+
+#################################################################
+### INDIVIDUOS
+### Un individuo es una entidad concreta del mundo real.
+#################################################################
+
+### Lugares
+
+:Paucartambo a :Localidad ;
+  rdfs:label "Paucartambo"@es ;
+  :descripcionBreve "Localidad cusqueña donde se celebra la festividad de la Virgen del Carmen."@es ;
+  :nivelEmbeddings "A" ;
+  geo:lat "-13.3140"^^xsd:decimal ;
+  geo:long "-71.5940"^^xsd:decimal ;
+  rdfs:comment "Coordenadas aproximadas. Ajustar con fuente oficial si se requiere precisión."@es .
+
+:Sinakara a :Lugar ;
+  rdfs:label "Sinakara"@es ;
+  :descripcionBreve "Zona ritual de alta montaña asociada a Qoyllur Rit’i."@es ;
+  :nivelEmbeddings "A" ;
+  rdfs:comment "COMPLETAR: lat/long si se desea georreferenciación."@es .
+
+### (NUEVO) Lugar clave para precisión etnográfica
+:ColquePunku a :Glaciar ;
+  rdfs:label "Colque Punku"@es ;
+  :descripcionBreve "Glaciar asociado a la peregrinación de Qoyllur Rit’i en el área ritual de Sinakara."@es ;
+  :nivelEmbeddings "A" ;
+  rdfs:comment "COMPLETAR: lat/long con referencia (GPS/carta/fuente)."@es .
 
 :SantuarioQoylluriti a :Santuario ;
-    rdfs:label "Santuario del Señor de Qoyllur Rit'i"@es ;
-    :latDecimal    -13.54828 ;
-    :lonDecimal    -71.23665 ;
-    :altitudMetros 4700 ;
-    :descripcionBreve "Santuario de alta montaña asociado a la devoción al Señor de Qoyllur Rit'i."@es ;
-    :descripcionEtnografica "Punto central de peregrinación ubicado en un paisaje glaciar; es el lugar de llegada de comparsas, naciones de danzantes y devotos."@es .
+  rdfs:label "Santuario del Señor de Qoyllur Rit’i"@es ;
+  :descripcionBreve "Santuario principal de la peregrinación de Qoyllur Rit’i."@es ;
+  :nivelEmbeddings "A" ;
+  rdfs:comment "COMPLETAR: lat/long si aplica."@es .
 
 :IglesiaPaucartambo a :Iglesia ;
-    rdfs:label "Iglesia de Paucartambo"@es ;
-    :latDecimal   -13.3160 ;
-    :lonDecimal   -71.5930 ;
-    :descripcionBreve "Templo principal donde se celebra la fiesta de la Virgen del Carmen."@es ;
-    :descripcionEtnografica "Espacio de misa, concentraciones rituales y punto clave de la Entrada de Naciones."@es .
+  rdfs:label "Iglesia de Paucartambo"@es ;
+  :descripcionBreve "Templo central de la festividad de la Virgen del Carmen."@es ;
+  :nivelEmbeddings "A" ;
+  geo:lat "-13.3140"^^xsd:decimal ;
+  geo:long "-71.5940"^^xsd:decimal ;
+  rdfs:comment "Coordenadas aproximadas (mismo centro urbano). Ajustar si se desea precisión del edificio."@es .
 
-:EntradaPrincipalIglesia a :LugarDePaso ;
-    rdfs:label "Entrada principal de la iglesia de Paucartambo"@es ;
-    :latDecimal   -13.3161 ;
-    :lonDecimal   -71.5931 ;
-    :descripcionBreve "Punto ritual donde ingresan comparsas y se realiza el saludo a la Virgen."@es ;
-    :descripcionEtnografica "Se congregan danzantes, autoridades religiosas y espectadores en momentos de gran carga simbólica."@es .
+### Entidades veneradas
+
+:SenorDeQoyllurRiti a :EntidadVenerada ;
+  rdfs:label "Señor de Qoyllur Rit’i"@es ;
+  :descripcionBreve "Entidad sagrada central de la peregrinación andina."@es ;
+  :nivelEmbeddings "A" .
+
+:VirgenDelCarmen a :EntidadVenerada ;
+  rdfs:label "Virgen del Carmen"@es ;
+  :descripcionBreve "Imagen mariana venerada en Paucartambo."@es ;
+  :nivelEmbeddings "A" .
+
+### Festividades
+
+:FestividadQoylluriti a :Festividad ;
+  rdfs:label "Festividad del Señor de Qoyllur Rit’i"@es ;
+  :descripcionBreve "Peregrinación andina al santuario del Señor de Qoyllur Rit’i."@es ;
+  :nivelEmbeddings "A" ;
+  :SeCelebraEn :SantuarioQoylluriti ;
+  :SeCelebraEn :Sinakara .
+
+:FestividadVirgenCarmenPaucartambo a :Festividad ;
+  rdfs:label "Festividad de la Virgen del Carmen de Paucartambo"@es ;
+  :descripcionBreve "Fiesta patronal de Paucartambo dedicada a la Virgen del Carmen."@es ;
+  :nivelEmbeddings "A" ;
+  :SeCelebraEn :Paucartambo ;
+  :SeCelebraEn :IglesiaPaucartambo .
+
+### Comunidad
+
+:ComunidadPaucartambo a :Comunidad ;
+  rdfs:label "Comunidad de Paucartambo"@es ;
+  :descripcionBreve "Colectivo local vinculado a la organización de la festividad."@es ;
+  :nivelEmbeddings "A" ;
+  :relacionadoCon :FestividadVirgenCarmenPaucartambo ;
+  :relacionadoCon :FestividadQoylluriti .
 
 #################################################################
-# OPCIONAL: VOCABULARIO ESTÁNDAR WGS84 (si necesitas interoperabilidad)
+### (NUEVO) EJEMPLO DE EVENTO RITUAL COHERENTE
+### Un evento NO es un segmento temporal.
+### Aquí modelamos “Bajada del glaciar” como EventoRitual,
+### y lo ubicamos en Colque Punku / Sinakara.
 #################################################################
 
-@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+:BajadaColquePunku_2025 a :EventoRitual ;
+  rdfs:label "Bajada desde el glaciar Colque Punku (2025)"@es ;
+  :descripcionBreve "Descenso desde el glaciar Colque Punku en el marco de Qoyllur Rit’i."@es ;
+  :nivelEmbeddings "B" ;
+  :estaEnLugar :ColquePunku ;
+  rdfs:comment "Si luego quieres describir 'alba/noche', usa :ocurreDurante con un SegmentoRitual bien definido, pero no lo fuerces si no aplica."@es .
 
-:SantuarioQoylluriti
-    geo:lat  "-13.7000"^^xsd:decimal ;
-    geo:long "-71.3667"^^xsd:decimal .
+:FestividadQoylluriti :incluyeEvento :BajadaColquePunku_2025 .
 
-:IglesiaPaucartambo
-    geo:lat  "-13.3160"^^xsd:decimal ;
-    geo:long "-71.5930"^^xsd:decimal .
+#################################################################
+### (NUEVO) EJEMPLO DE RECURSO MEDIAL (FOTO)
+### Incluye código estable + ruta + fecha + relación documental.
+#################################################################
 
+:QOY_FOTO_2025_001 a :Foto ;
+  rdfs:label "Foto: Bajada desde Colque Punku (17 junio 2025)"@es ;
+  :codigoRecurso "QOY-FOTO-2025-001" ;
+  :rutaArchivo "resources/qoylluriti/fotos/QOY-FOTO-2025-001.jpg" ;
+  :fechaCaptura "2025-06-17"^^xsd:date ;
+  :descripcionBreve "Fotografía del descenso desde el glaciar Colque Punku en Sinakara durante Qoyllur Rit’i, con participantes de distintas naciones."@es ;
+  :descripcionEtnografica "COMPLETAR: descripción ampliada (3–6 frases) con vocabulario narrativo, sin inventar, indicando lo visible en la imagen."@es ;
+  :fuenteTexto "Registro fotográfico propio, 17/06/2025."@es ;
+  :nivelEmbeddings "A" ;
+  :documentaA :BajadaColquePunku_2025 .
 
-###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
+:FestividadQoylluriti :tieneRecursoMedial :QOY_FOTO_2025_001 .
+
+#################################################################
+### CÓMO EXTENDER ESTE TTL (PATRONES)
+### 1) Agregar un nuevo lugar:
+###    :NuevoLugar a :Lugar ; rdfs:label ... ; geo:lat ... ; geo:long ... ; :descripcionBreve ... .
+###
+### 2) Agregar un evento:
+###    :EventoX a :EventoRitual ; :estaEnLugar :LugarY ; y conectar:
+###    :FestividadZ :incluyeEvento :EventoX .
+###
+### 3) Agregar un recurso:
+###    :CODIGO ... a :Foto/:Video/:Audio/:DocumentoTexto ;
+###      :codigoRecurso "..."; :rutaArchivo "..."; :fechaCaptura "...";
+###      :documentaA :EventoX (o :FestividadZ, o :LugarY) ;
+###      :descripcionBreve ... ; (Nivel A => :descripcionEtnografica + :fuenteTexto).
+#################################################################
