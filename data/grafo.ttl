@@ -467,7 +467,9 @@
 
 :FestividadQoylluriti a :Festividad ;
   rdfs:label "Festividad del Señor de Qoyllur Rit’i"@es ;
-  :descripcionBreve "Peregrinación andina al santuario del Señor de Qoyllur Rit’i."@es ;
+  :descripcionBreve "Peregrinación andina de carácter ritual que se realiza anualmente en el área de Sinakara en honor al Señor de Qoyllur Rit’i."@es ;
+  :descripcionEtnografica "La festividad del Señor de Qoyllur Rit’i es una de las peregrinaciones rituales más importantes de los Andes del sur del Perú. Reúne a comunidades y naciones de distintas regiones que se desplazan hacia el área ritual de Sinakara, incluyendo el santuario y el glaciar Colque Punku. Durante la festividad se desarrollan caminatas rituales, danzas, actos de veneración y eventos colectivos que articulan prácticas religiosas, identidades locales y relaciones con el paisaje sagrado de montaña."@es ;
+  :fuenteTexto "Observación de campo, registro etnográfico propio y conocimiento local compartido por participantes de la festividad."@es ;
   :nivelEmbeddings "A" ;
   :SeCelebraEn :SantuarioQoylluriti ;
   :SeCelebraEn :ColquePunku ;
@@ -475,7 +477,9 @@
 
 :FestividadVirgenCarmenPaucartambo a :Festividad ;
   rdfs:label "Festividad de la Virgen del Carmen de Paucartambo"@es ;
-  :descripcionBreve "Fiesta patronal de Paucartambo dedicada a la Virgen del Carmen."@es ;
+  :descripcionBreve "Fiesta patronal de Paucartambo dedicada a la Virgen del Carmen, con celebraciones religiosas y participación de comparsas y danzas."@es ;
+  :descripcionEtnografica "La Festividad de la Virgen del Carmen de Paucartambo es la celebración patronal más importante de la localidad y convoca a población local, visitantes y participantes organizados en comparsas y danzas. La devoción se expresa en ceremonias y actos de veneración vinculados a la iglesia del pueblo y a espacios públicos de Paucartambo. En el transcurso de la festividad se articulan prácticas religiosas, organización comunal y expresiones festivas que forman parte de la memoria e identidad local."@es ;
+  :fuenteTexto "Descripción preliminar basada en conocimiento local y observación general; ajustar y validar con participantes y fuentes comunitarias."@es ;
   :nivelEmbeddings "A" ;
   :SeCelebraEn :Paucartambo ;
   :SeCelebraEn :IglesiaPaucartambo .
