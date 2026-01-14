@@ -206,7 +206,6 @@
   rdfs:label "Nivel de embeddings"@es ;
   rdfs:comment "Clasificación para embeddings y RAG: A = entidades centrales (si faltan, el sistema no entiende el dominio); B = entidades contextuales (aportan contexto, pero no son protagonistas); C = entidades estructurales o técnicas (ordenan el grafo y no deben aparecer en respuestas ni generar embeddings)."@es .
 
-
 :codigoRecurso a owl:AnnotationProperty ;
   rdfs:label "Código de recurso"@es ;
   rdfs:comment "Identificador estable para fotos, videos, audios y documentos."@es .
@@ -214,6 +213,10 @@
 :rutaArchivo a owl:AnnotationProperty ;
   rdfs:label "Ruta de archivo"@es ;
   rdfs:comment "Ruta local o URL donde se encuentra el recurso."@es .
+
+:nombreAlternativo a owl:AnnotationProperty ;
+  rdfs:label "nombre alternativo"@es ;
+  rdfs:comment "Variantes de nombre (locales, regionales o históricas) para la misma entidad. No crea entidades nuevas: solo alias para búsqueda y RAG."@es .
 
 #################################################################
 ### (NUEVO) PROPIEDADES DE DATOS
@@ -239,6 +242,14 @@
 :EventoRitual a owl:Class ;
   rdfs:label "Evento ritual"@es ;
   rdfs:comment "Actividad concreta que ocurre dentro de una festividad."@es .
+
+:Danza a owl:Class ;
+  rdfs:label "Danza ritual"@es ;
+  rdfs:comment "Práctica ritual codificada (coreografía, vestimenta, música y roles) que se ejecuta dentro de una festividad. No es un evento puntual: puede aparecer en varios eventos y años."@es .
+
+:PersonajeRitual a owl:Class ;
+  rdfs:label "Personaje ritual"@es ;
+  rdfs:comment "Figura simbólica o rol ritual asociado a una danza o comparsa (p. ej., Ukuku, Qhapaq Qolla). Puede modelarse como individuo o como clase, según el nivel de detalle."@es .
 
 :Procesion a owl:Class ;
   rdfs:subClassOf :EventoRitual ;
@@ -274,11 +285,16 @@
   rdfs:subClassOf :Lugar ;
   rdfs:label "Iglesia"@es .
 
+:LugarRitual a owl:Class ;
+  rdfs:subClassOf :Lugar ;
+  rdfs:label "Lugar ritual"@es ;
+  rdfs:comment "Lugar asociado de manera directa a prácticas rituales o devocionales dentro de una festividad (sin describir el acto)."@es .
+
 :LugarDePaso a owl:Class ;
   rdfs:subClassOf :Lugar ;
   rdfs:label "Lugar de paso"@es .
 
-### (NUEVO) Subtipo útil para precisión (opcional)
+### Subtipo útil para precisión
 :Glaciar a owl:Class ;
   rdfs:subClassOf :Lugar ;
   rdfs:label "Glaciar"@es ;
@@ -302,6 +318,14 @@
 ### Definen relaciones entre entidades.
 #################################################################
 
+:esVeneradaEn a owl:ObjectProperty ;
+  rdfs:domain :EntidadVenerada ;
+  rdfs:range  :EventoRitual .
+
+:tieneLugarDeVeneracion a owl:ObjectProperty ;
+  rdfs:domain :EntidadVenerada ;
+  rdfs:range  :LugarRitual .
+
 :SeCelebraEn a owl:ObjectProperty ;
   rdfs:domain :Festividad ;
   rdfs:range :Lugar ;
@@ -312,15 +336,45 @@
   rdfs:range :EventoRitual ;
   rdfs:label "incluye evento"@es .
 
+:seInterpretaEnFestividad a owl:ObjectProperty ;
+  rdfs:domain :Danza ;
+  rdfs:range :Festividad ;
+  rdfs:label "se interpreta en festividad"@es ;
+  rdfs:comment "Relaciona una danza con la(s) festividad(es) donde se interpreta."@es .
+
+:seEjecutaDurante a owl:ObjectProperty ;
+  rdfs:domain :Danza ;
+  rdfs:range :EventoRitual ;
+  rdfs:label "se ejecuta durante"@es ;
+  rdfs:comment "Relaciona una danza con un evento ritual concreto (p. ej. bajada del glaciar, entrada, procesión)."@es .
+
+:incluyePersonaje a owl:ObjectProperty ;
+  rdfs:domain :Danza ;
+  rdfs:range :PersonajeRitual ;
+  rdfs:label "incluye personaje"@es ;
+  rdfs:comment "Indica que una danza involucra uno o más personajes rituales."@es .
+
 :ocurreDurante a owl:ObjectProperty ;
   rdfs:domain :EventoRitual ;
   rdfs:range :TiempoRitual ;
   rdfs:label "ocurre durante"@es .
 
+:celebra a owl:ObjectProperty ;
+  rdfs:domain :Comunidad ;
+  rdfs:range :Festividad ;
+  rdfs:label "celebra"@es ;
+  rdfs:comment "Indica que una comunidad participa/organiza/celebra una festividad (relación social, no geográfica)."@es .
+
 :estaEnLugar a owl:ObjectProperty ;
   rdfs:domain :EventoRitual ;
   rdfs:range :Lugar ;
   rdfs:label "está en lugar"@es .
+
+:ubicadoEn a owl:ObjectProperty ;
+  rdfs:domain :Lugar ;
+  rdfs:range :Lugar ;
+  rdfs:label "ubicado en"@es ;
+  rdfs:comment "Relaciona un lugar con otro lugar que lo contiene o contextualiza (p.ej. Colque Punku ubicado en Sinakara; Iglesia ubicada en Paucartambo)."@es .
 
 :relacionadoCon a owl:ObjectProperty ;
   rdfs:domain :Comunidad ;
@@ -346,50 +400,68 @@
 
 :Paucartambo a :Localidad ;
   rdfs:label "Paucartambo"@es ;
-  :descripcionBreve "Localidad cusqueña donde se celebra la festividad de la Virgen del Carmen."@es ;
+  :descripcionBreve "Paucartambo es una localidad del Cusco reconocida por su fuerte tradición festiva y religiosa. Es el principal centro urbano asociado a la festividad de la Virgen del   Carmen y un punto de partida importante para la peregrinación al Señor de Qoyllur Rit’i."@es ;
+  :descripcionEtnografica "Paucartambo es un pueblo andino con una vida ritual intensa, donde las danzas y las festividades religiosas forman parte central de la identidad local. Cada año, la festividad de la Virgen del Carmen convoca a comparsas, músicos y visitantes, transformando el espacio urbano en un escenario ritual. Desde Paucartambo también parten grupos de danzantes y peregrinos hacia la festividad del Señor de Qoyllur Rit’i, iniciando el recorrido hacia Mahuayani y posteriormente hacia Sinakara. En este contexto, el pueblo funciona como un punto de reunión, preparación y despedida, articulando la vida cotidiana con los ciclos rituales regionales."@es ;
   :nivelEmbeddings "A" ;
   geo:lat "-13.3140"^^xsd:decimal ;
   geo:long "-71.5940"^^xsd:decimal ;
-  rdfs:comment "Coordenadas aproximadas. Ajustar con fuente oficial si se requiere precisión."@es .
+  rdfs:comment "Coordenadas aproximadas. Ajustar con fuente oficial."@es .
 
 :Sinakara a :Lugar ;
   rdfs:label "Sinakara"@es ;
-  :descripcionBreve "Zona ritual de alta montaña asociada a Qoyllur Rit’i."@es ;
+  :descripcionBreve "Sinakara es una zona ritual de alta montaña donde se desarrolla la parte principal de la festividad del Señor de Qoyllur Rit’i. En este espacio se concentran el santuario, los campamentos y los principales eventos rituales de la peregrinación."@es ;
+  :descripcionEtnografica "Sinakara es un espacio ritual de altura ubicado en la cordillera, que funciona como el núcleo territorial de la festividad del Señor de Qoyllur Rit’i. Durante los días de la peregrinación, el área se transforma con la llegada de miles de personas, la instalación de campamentos y la realización de ceremonias religiosas y rituales. En Sinakara se encuentran el santuario, las zonas de descanso y los accesos hacia lugares clave como el glaciar Colque Punku. El espacio no es un pueblo permanente, sino un territorio ritual temporalmente habitado, cuya organización responde a los tiempos y prácticas propias de la festividad."@es ;
   :nivelEmbeddings "A" ;
-  rdfs:comment "COMPLETAR: lat/long si se desea georreferenciación."@es .
+  geo:lat "-13.528333"^^xsd:decimal ;
+  geo:long "-71.233611"^^xsd:decimal ;
+  rdfs:comment "lat/long aproximado."@es .
 
-### (NUEVO) Lugar clave para precisión etnográfica
 :ColquePunku a :Glaciar ;
   rdfs:label "Colque Punku"@es ;
   :descripcionBreve "Glaciar asociado a la peregrinación de Qoyllur Rit’i en el área ritual de Sinakara."@es ;
+  :descripcionEtnografica "Colque Punku es un glaciar de alta montaña ubicado en el área ritual de Sinakara y constituye uno de los espacios centrales en el desarrollo de la festividad del Señor de Qoyllur Rit’i. Durante la peregrinación, distintos grupos y danzantes ascienden y descienden por este sector como parte de eventos rituales específicos del ciclo festivo. El glaciar y su entorno inmediato funcionan como un espacio de tránsito ritual, donde se observan desplazamientos colectivos, formaciones de grupos y pausas breves antes de continuar el recorrido."@es ;
+  :ubicadoEn :Sinakara ;
   :nivelEmbeddings "A" ;
-  rdfs:comment "COMPLETAR: lat/long con referencia (GPS/carta/fuente)."@es .
+  geo:lat "-13.519167"^^xsd:decimal ;
+  geo:long "-71.206667"^^xsd:decimal ;
+  rdfs:comment "lat/long aproximado."@es .
 
-:SantuarioQoylluriti a :Santuario ;
+:SantuarioQoylluriti a :Santuario, :LugarRitual ;
   rdfs:label "Santuario del Señor de Qoyllur Rit’i"@es ;
-  :descripcionBreve "Santuario principal de la peregrinación de Qoyllur Rit’i."@es ;
+  :descripcionBreve "Santuario de alta montaña donde se concentra la peregrinación del Señor de Qoyllur Rit’i durante la festividad anual."@es ;
+  :descripcionEtnografica "El santuario del Señor de Qoyllur Rit’i es el principal punto de reunión de los peregrinos que llegan a la zona de Sinakara. En este espacio se realizan actos de veneración y ceremonias colectivas vinculadas a la imagen sagrada. Durante los días de la festividad, el entorno del santuario se llena de campamentos temporales y de la presencia de danzas, comunidades y naciones provenientes de distintas regiones andinas."@es ;
   :nivelEmbeddings "A" ;
-  rdfs:comment "COMPLETAR: lat/long si aplica."@es .
+  geo:lat "-13.1869"^^xsd:decimal ;
+  geo:long "-71.3366"^^xsd:decimal ;
+  rdfs:comment "lat/long aproximado."@es .
 
 :IglesiaPaucartambo a :Iglesia ;
   rdfs:label "Iglesia de Paucartambo"@es ;
-  :descripcionBreve "Templo central de la festividad de la Virgen del Carmen."@es ;
+  :descripcionBreve "Templo principal de Paucartambo donde se realizan los actos centrales de la festividad de la Virgen del Carmen."@es ;
+  :descripcionEtnografica "La iglesia de Paucartambo es el espacio religioso más importante del pueblo durante la festividad de la Virgen del Carmen. Frente a este templo se organizan formaciones, desfiles y actos rituales previos y posteriores a las celebraciones principales. Durante los días festivos, la iglesia concentra la participación de danzas, comparsas, autoridades locales y devotos."@es ;
   :nivelEmbeddings "A" ;
   geo:lat "-13.3140"^^xsd:decimal ;
   geo:long "-71.5940"^^xsd:decimal ;
+  :ubicadoEn :Paucartambo ;
   rdfs:comment "Coordenadas aproximadas (mismo centro urbano). Ajustar si se desea precisión del edificio."@es .
 
 ### Entidades veneradas
 
 :SenorDeQoyllurRiti a :EntidadVenerada ;
   rdfs:label "Señor de Qoyllur Rit’i"@es ;
-  :descripcionBreve "Entidad sagrada central de la peregrinación andina."@es ;
-  :nivelEmbeddings "A" .
+  :descripcionBreve "Entidad sagrada venerada en la peregrinación andina de Qoyllur Rit’i."@es ;
+  :descripcionEtnografica "El Señor de Qoyllur Rit’i es la imagen sagrada en torno a la cual se organiza la peregrinación anual en la zona de Sinakara. Su veneración convoca a comunidades y naciones andinas que participan mediante caminatas rituales, danzas y ceremonias colectivas. La presencia de esta entidad estructura los recorridos, los tiempos rituales y los actos religiosos que se desarrollan en el santuario."@es ;  
+  :nivelEmbeddings "A" ;
+  :tieneLugarDeVeneracion :SantuarioQoylluriti .
 
 :VirgenDelCarmen a :EntidadVenerada ;
   rdfs:label "Virgen del Carmen"@es ;
-  :descripcionBreve "Imagen mariana venerada en Paucartambo."@es ;
-  :nivelEmbeddings "A" .
+  :descripcionBreve "Imagen mariana venerada en la festividad de la Virgen del Carmen en Paucartambo."@es ;
+  :descripcionEtnografica "La Virgen del Carmen es la imagen central de la festividad de Paucartambo y concentra las prácticas religiosas y celebratorias del pueblo. Su veneración se expresa mediante procesiones, danzas y actos colectivos que articulan la vida ritual y social de la localidad. La presencia de esta imagen organiza los recorridos festivos y las actividades que se desarrollan en torno a la iglesia y el espacio urbano."@es ;
+  :fuenteTexto "Observación de campo y registro etnográfico propio."@es ;
+  :nivelEmbeddings "A" ;
+  :tieneLugarDeVeneracion :IglesiaPaucartambo ;
+  :tieneLugarDeVeneracion :Paucartambo .
 
 ### Festividades
 
@@ -398,6 +470,7 @@
   :descripcionBreve "Peregrinación andina al santuario del Señor de Qoyllur Rit’i."@es ;
   :nivelEmbeddings "A" ;
   :SeCelebraEn :SantuarioQoylluriti ;
+  :SeCelebraEn :ColquePunku ;
   :SeCelebraEn :Sinakara .
 
 :FestividadVirgenCarmenPaucartambo a :Festividad ;
@@ -414,7 +487,28 @@
   :descripcionBreve "Colectivo local vinculado a la organización de la festividad."@es ;
   :nivelEmbeddings "A" ;
   :relacionadoCon :FestividadVirgenCarmenPaucartambo ;
-  :relacionadoCon :FestividadQoylluriti .
+  :relacionadoCon :FestividadQoylluriti ;
+  :relacionadoCon :Paucartambo .
+
+### Personas o danzas
+
+:Ukuku a :PersonajeRitual ;
+  rdfs:label "Ukuku"@es ;
+  :descripcionBreve "Personaje ritual andino asociado a funciones de vigilancia, mediación y orden durante Qoyllur Rit’i."@es ;
+  :descripcionEtnografica "COMPLETAR: descripción narrativa (3–6 frases) basada en fuentes o experiencia de campo, sin inventar."@es ;
+  :fuenteTexto "COMPLETAR: fuente (campo, entrevista, texto, etc.)."@es ;
+  :nombreAlternativo "Ukamari"@es ;
+  :nombreAlternativo "Pablito"@es ;
+  :nivelEmbeddings "A" .
+
+:DanzaUkuku a :Danza ;
+  rdfs:label "Danza del Ukuku"@es ;
+  :descripcionBreve "Danza ritual asociada al personaje Ukuku, interpretada en el marco de la festividad de Qoyllur Rit’i."@es ;
+  :descripcionEtnografica "COMPLETAR: descripción ampliada (3–6 frases) sobre su rol y ejecución en el contexto ritual."@es ;
+  :fuenteTexto "COMPLETAR: fuente (campo, entrevista, texto, etc.)."@es ;
+  :nivelEmbeddings "A" ;
+  :seInterpretaEnFestividad :FestividadQoylluriti ;
+  :incluyePersonaje :Ukuku .
 
 #################################################################
 ### (NUEVO) EJEMPLO DE EVENTO RITUAL COHERENTE
@@ -433,7 +527,7 @@
 :FestividadQoylluriti :incluyeEvento :BajadaColquePunku_2025 .
 
 #################################################################
-### (NUEVO) EJEMPLO DE RECURSO MEDIAL (FOTO)
+### EJEMPLO DE RECURSO MEDIAL (FOTO)
 ### Incluye código estable + ruta + fecha + relación documental.
 #################################################################
 
