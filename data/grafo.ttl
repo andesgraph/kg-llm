@@ -487,8 +487,10 @@
 ### Comunidad
 
 :ComunidadPaucartambo a :Comunidad ;
-  rdfs:label "Comunidad de Paucartambo"@es ;
-  :descripcionBreve "Colectivo local vinculado a la organización de la festividad."@es ;
+  rdfs:label "Actores locales de Paucartambo"@es ;
+  :descripcionBreve "Conjunto de organizaciones y actores locales que, según la festividad, coordinan danzas, actividades religiosas y aspectos logísticos en Paucartambo."@es ;
+  :descripcionEtnografica "En Paucartambo, la organización de las fiestas suele involucrar a agrupaciones de danzas y sus directivas, comités o cargos festivos, la iglesia y autoridades locales. La forma exacta de coordinación varía según el año y el evento, pero normalmente incluye acuerdos sobre recorridos, horarios, participación de comparsas y cuidado de espacios centrales como la iglesia y la plaza."@es ;
+  :fuenteTexto "Descripción preliminar para anotación y RAG; revisar!"@es ;
   :nivelEmbeddings "A" ;
   :relacionadoCon :FestividadVirgenCarmenPaucartambo ;
   :relacionadoCon :FestividadQoylluriti ;
@@ -498,24 +500,24 @@
 
 :Ukuku a :PersonajeRitual ;
   rdfs:label "Ukuku"@es ;
-  :descripcionBreve "Personaje ritual andino asociado a funciones de vigilancia, mediación y orden durante Qoyllur Rit’i."@es ;
-  :descripcionEtnografica "COMPLETAR: descripción narrativa (3–6 frases) basada en fuentes o experiencia de campo, sin inventar."@es ;
-  :fuenteTexto "COMPLETAR: fuente (campo, entrevista, texto, etc.)."@es ;
+  :descripcionBreve "Personaje ritual central de la peregrinación de Qoyllur Rit’i, encargado del orden, la vigilancia y el acompañamiento de las danzas durante los momentos clave del ritual."@es ;
+  :descripcionEtnografica "El Ukuku, también conocido como Ukamari o Pablito, es un personaje ritual presente en todas las comparsas de la peregrinación de Qoyllur Rit’i. Se trata generalmente de jóvenes adultos que cumplen funciones de control interno, disciplina y apoyo logístico, pero que al mismo tiempo encarnan un rol burlesco y transgresor. Los Ukuku participan en acciones rituales de alta intensidad, como la subida nocturna al glaciar y el descenso al amanecer portando las cruces de las naciones. En distintas interpretaciones etnográficas, el Ukuku ha sido asociado tanto a figuras animales (oso, alpaca) como a seres liminales entre lo humano y lo no humano, combinando fuerza, sacrificio, humor y autoridad ritual."@es ;
+  :fuenteTexto "Salas Carreño, G. (2014). The Glacier, the Rock, the Image: Emotional Experience and Semiotic Diversity at the Quyllurit’i Pilgrimage."@es ;
   :nombreAlternativo "Ukamari"@es ;
   :nombreAlternativo "Pablito"@es ;
   :nivelEmbeddings "A" .
 
 :DanzaUkuku a :Danza ;
   rdfs:label "Danza del Ukuku"@es ;
-  :descripcionBreve "Danza ritual asociada al personaje Ukuku, interpretada en el marco de la festividad de Qoyllur Rit’i."@es ;
-  :descripcionEtnografica "COMPLETAR: descripción ampliada (3–6 frases) sobre su rol y ejecución en el contexto ritual."@es ;
-  :fuenteTexto "COMPLETAR: fuente (campo, entrevista, texto, etc.)."@es ;
+  :descripcionBreve "Danza ritual ejecutada por los Ukuku durante la peregrinación de Qoyllur Rit’i, presente en distintos eventos y momentos clave del ciclo festivo."@es ;
+  :descripcionEtnografica "La Danza del Ukuku no se organiza como una coreografía escénica fija, sino como una práctica ritual distribuida a lo largo de la peregrinación de Qoyllur Rit’i. Los Ukuku se desplazan, interactúan y ejecutan movimientos corporales asociados al control del grupo, la vigilancia del orden ritual y la participación en acciones colectivas de alto contenido simbólico, como la subida y bajada del glaciar. La danza se expresa a través del uso del traje, la máscara, los desplazamientos rítmicos y las interacciones con otros danzantes y peregrinos. Desde una perspectiva etnográfica, esta práctica combina elementos de disciplina, juego, sacrificio y liminalidad, y forma parte central de la experiencia emocional y semiótica de la peregrinación."@es ;
+  :fuenteTexto "Salas Carreño, G. (2014). The Glacier, the Rock, the Image: Emotional Experience and Semiotic Diversity at the Quyllurit’i Pilgrimage."@es ;
   :nivelEmbeddings "A" ;
   :seInterpretaEnFestividad :FestividadQoylluriti ;
   :incluyePersonaje :Ukuku .
 
 #################################################################
-### (NUEVO) EJEMPLO DE EVENTO RITUAL COHERENTE
+### EVENTO RITUAL
 ### Un evento NO es un segmento temporal.
 ### Aquí modelamos “Bajada del glaciar” como EventoRitual,
 ### y lo ubicamos en Colque Punku / Sinakara.
@@ -523,10 +525,12 @@
 
 :BajadaColquePunku_2025 a :EventoRitual ;
   rdfs:label "Bajada desde el glaciar Colque Punku (2025)"@es ;
-  :descripcionBreve "Descenso desde el glaciar Colque Punku en el marco de Qoyllur Rit’i."@es ;
+  :descripcionBreve "Evento ritual de descenso desde el glaciar Colque Punku hacia el área ritual de Sinakara durante la peregrinación de Qoyllur Rit’i."@es ;
+  :descripcionEtnografica "La bajada desde el glaciar Colque Punku es un evento ritual colectivo en el que los Ukuku y otros participantes descienden desde la zona glaciar hacia los sectores inferiores de Sinakara. Durante este recorrido se observan grupos provenientes de distintas naciones, identificables por variaciones en el traje y los colores, que avanzan en filas sobre un terreno rocoso y, en algunos tramos, cubierto de nieve. El evento no consiste en una procesión formal, sino en un desplazamiento ritualizado que marca la transición entre el espacio glaciar y el resto del circuito ceremonial de Qoyllur Rit’i."@es ;
+  :fuenteTexto "Registro etnográfico y fotográfico de campo, peregrinación 2025."@es ;
   :nivelEmbeddings "B" ;
   :estaEnLugar :ColquePunku ;
-  rdfs:comment "Si luego quieres describir 'alba/noche', usa :ocurreDurante con un SegmentoRitual bien definido, pero no lo fuerces si no aplica."@es .
+  rdfs:comment "Si se desea mayor precisión temporal, puede vincularse a un SegmentoRitual (por ejemplo, alba o mañana), siempre que esté documentado."@es .
 
 :FestividadQoylluriti :incluyeEvento :BajadaColquePunku_2025 .
 
